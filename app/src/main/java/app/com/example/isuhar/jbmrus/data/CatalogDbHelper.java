@@ -25,12 +25,12 @@ public class CatalogDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_OFFERS_TABLE = "CREATE TABLE " + OffersEntry.TABLE_NAME + " (" +
 
-                OffersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                OffersEntry._ID + " INTEGER PRIMARY KEY," +
 
                 OffersEntry.COLUMN_CAT_KEY + " INTEGER NOT NULL, " +
                 OffersEntry.COLUMN_OFFER_NAME + " TEXT NOT NULL, " +
                 OffersEntry.COLUMN_OFFER_PRICE + " REAL NOT NULL, " +
-                OffersEntry.COLUMN_OFFER_IMG + " TEXT NOT NULL," +
+                OffersEntry.COLUMN_OFFER_IMG + " TEXT NOT NULL, " +
 
                 " FOREIGN KEY (" + OffersEntry.COLUMN_CAT_KEY + ") REFERENCES " +
                 CategoriesEntry.TABLE_NAME + " (" + CategoriesEntry._ID +
@@ -38,7 +38,7 @@ public class CatalogDbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_CATEGORIES_TABLE = "CREATE TABLE " + CategoriesEntry.TABLE_NAME + " (" +
                 CategoriesEntry._ID + " INTEGER PRIMARY KEY," +
-                CategoriesEntry.COLUMN_CATEGORY_NAME + " TEXT NOT NULL, " +
+                CategoriesEntry.COLUMN_CATEGORY_NAME + " TEXT NOT NULL " +
                 " );";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CATEGORIES_TABLE);

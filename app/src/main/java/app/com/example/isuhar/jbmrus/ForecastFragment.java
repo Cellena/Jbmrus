@@ -40,6 +40,7 @@ import android.content.SharedPreferences;
 
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
 import app.com.example.isuhar.jbmrus.ForecastAdapter;
+import app.com.example.isuhar.jbmrus.data.CatalogProvider;
 
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -99,13 +100,20 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        // Sort order:  Ascending, by date.
+        // Sort order:  Ascending, by name.
         String sortOrder = CatalogContract.CategoriesEntry.COLUMN_CATEGORY_NAME + " ASC";
-        Uri CatalogUri = CatalogContract.CategoriesEntry.buildCategoriesUri(102);
+
+        Uri Categories = CatalogContract.CategoriesEntry.CONTENT_URI;
+        /*
+        Loader asd = new CursorLoader(getActivity(),Categories,null,null,null,sortOrder);
+        long _id = asd.getId();
+
+        Uri CatalogUri = CatalogContract.CategoriesEntry.buildCategoriesUri(_id);
+        */
 
         return new CursorLoader(
                 getActivity(),
-                CatalogUri,
+                Categories,
                 null,
                 null,
                 null,

@@ -25,7 +25,6 @@ public class CatalogProvider extends ContentProvider {
     static final int OFFERS_BY_CATEGORIES = 101;
     static final int CATEGORIES = 102;
 
-
     private static final SQLiteQueryBuilder sOffersByCategoriesQueryBuilder;
 
     static {

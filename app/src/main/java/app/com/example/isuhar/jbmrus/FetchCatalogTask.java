@@ -116,7 +116,13 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
                 oVVector.add(OffersValues);
             }
 
-
+            inserted = 0;
+            // add to database
+            if ( oVVector.size() > 0 ) {
+                ContentValues[] cvArray = new ContentValues[oVVector.size()];
+                oVVector.toArray(cvArray);
+                inserted = mContext.getContentResolver().bulkInsert(CategoriesEntry.CONTENT_URI, cvArray);
+            }
 
             Log.d(LOG_TAG, "FetchCatalogTask Complete. " + inserted + " Inserted");
 

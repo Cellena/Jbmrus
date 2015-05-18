@@ -34,7 +34,7 @@ public class CatalogDbHelper extends SQLiteOpenHelper {
 
                 " FOREIGN KEY (" + OffersEntry.COLUMN_CAT_KEY + ") REFERENCES " +
                 CategoriesEntry.TABLE_NAME + " (" + CategoriesEntry._ID +
-                ");";
+                "));";
 
         final String SQL_CREATE_CATEGORIES_TABLE = "CREATE TABLE " + CategoriesEntry.TABLE_NAME + " (" +
                 CategoriesEntry._ID + " INTEGER PRIMARY KEY," +

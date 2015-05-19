@@ -9,12 +9,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.EditText;
 
 
 public class CartActivity extends ActionBarActivity{
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +51,13 @@ public class CartActivity extends ActionBarActivity{
             if (v.getId()==R.id.button_cart) {
                 Intent intent = new Intent(this, BuyActivity.class);
                 startActivity(intent);
+            }
+            if (v.getId()==R.id.buttonBuy) {
+                /*
+                EditText Phone = (EditText) findViewById(R.id.editText2);
+                EditText Name = (EditText) findViewById(R.id.fam);
+                Phone.setText(Name.getText());
+                */
             }
         }
 }

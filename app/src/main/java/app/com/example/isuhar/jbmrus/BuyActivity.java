@@ -62,7 +62,8 @@ public class BuyActivity extends ActionBarActivity {
     }
     public void onMyClickBuy(View v) {
         if (v.getId()==R.id.buttonBuy) {
-            
+
+
             String NameStr, PhoneStr, EmailStr, SityStr, StreetStr, PorchStr, AprtStr, HausStr;
 
             EditText Name = (EditText) findViewById(R.id.editText);
@@ -83,8 +84,16 @@ public class BuyActivity extends ActionBarActivity {
             PorchStr = Porch.getText().toString();
             AprtStr = Aprt.getText().toString();
 
-            new MyAsyncTask().execute(NameStr,PhoneStr,EmailStr,SityStr,StreetStr,HausStr,
-                    PorchStr,AprtStr);
+            if(NameStr.length()==0 || PhoneStr.length()==0l || EmailStr.length()==0 || SityStr.length()==0
+                    || StreetStr.length()==0 || HausStr.length()==0 || PorchStr.length()==0 || AprtStr.length()==0){
+                Toast.makeText(this, "Пожалуйста, заполните все поля",
+                        Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(this, "Спасибо за покупку!",
+                        Toast.LENGTH_LONG).show();
+                new MyAsyncTask().execute(NameStr, PhoneStr, EmailStr, SityStr, StreetStr, HausStr,
+                        PorchStr, AprtStr);
+            }
         }
     }
 }

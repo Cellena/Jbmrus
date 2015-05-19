@@ -47,6 +47,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private static final int FORECAST_LOADER = 0;
     private ForecastAdapter mForecastAdapter;
 
+    private static final String[] FORECAST_COLUMNS = {
+            CatalogContract.CategoriesEntry.TABLE_NAME + "." + CatalogContract.CategoriesEntry._ID,
+            CatalogContract.CategoriesEntry.COLUMN_CATEGORY_NAME
+    };
+
+    static final int COL_CATEGORY_ID = 0;
+    static final int COL_CATEGORY_NAME = 1;
+
     public ForecastFragment() {
     }
 
@@ -82,7 +90,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
-
         return rootView;
     }
 
@@ -92,7 +99,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
     private void updateCategories() {
         FetchCatalogTask catalogTask = new FetchCatalogTask(getActivity());
-        catalogTask.execute();
+        catalogTask.execute();//передаем параметры запроса
     }
     public void onStart() {
         super.onStart();
@@ -114,7 +121,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         return new CursorLoader(
                 getActivity(),
                 Categories,
-                null,
+                FORECAST_COLUMNS,
                 null,
                 null,
                 sortOrder

@@ -43,11 +43,11 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
     private void getCatalogDataFromJson(String forecastJsonStr)
             throws JSONException {
 
-        final String OWM_CATEGORIES = "0";
+        //final int OWM_CATEGORIES = 0;
         final String OWM_CATEGORIES_ID = "id";
         final String OWM_CATEGORIES_NAME = "name";
 
-        final String OWM_OFFERS = "1";
+        //final String OWM_OFFERS = "1";
         final String OWM_OFFER_ID = "id";
         final String OWM_OFFER_NAME = "name";
         final String OWM_OFFER_CATEGORY_ID = "id_category";
@@ -56,8 +56,10 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
 
         try {
             //Прием и сохранение катеорий
-            JSONObject forecastJson = new JSONObject(forecastJsonStr);
-            JSONArray categoriesArray = forecastJson.getJSONArray(OWM_CATEGORIES);//не принимает инт
+            //JSONObject forecastJson = new JSONObject(forecastJsonStr);
+            JSONArray myJSONArray = new JSONArray(forecastJsonStr);//не принимает инт
+            JSONArray categoriesArray = myJSONArray.getJSONArray(0);
+
             JSONObject cat = null;
             String categoryName = null;
             int categoryId = 0;
@@ -86,7 +88,7 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
                 inserted = mContext.getContentResolver().bulkInsert(CategoriesEntry.CONTENT_URI, cvArray);
             }
             //прием и сохранение товаров
-            JSONArray offersArray = forecastJson.getJSONArray(OWM_OFFERS);//не принимает инт
+            JSONArray offersArray = myJSONArray.getJSONArray(1);
             JSONObject offer = null;
             String offerName = null;
             int offerId = 0;

@@ -3,10 +3,12 @@
     package="app.com.example.isuhar.jbmrus" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:allowBackup="true"
+        android:displayOptions="useLogo|showHome"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:logo="@drawable/ic_action_action_shopping_cart"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
@@ -16,10 +18,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <provider
-            android:authorities="app.com.example.isuhar.jbmrus"
-            android:name=".data.CatalogProvider" />
-    </application>
 
+        <provider
+            android:name=".data.CatalogProvider"
+            android:authorities="app.com.example.isuhar.jbmrus" />
+
+        <activity
+            android:name=".CartActivity"
+            android:label="@string/title_activity_cart"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.com.example.isuhar.jbmrus.MainActivity" />
+        </activity>
+    </application>
 
 </manifest>

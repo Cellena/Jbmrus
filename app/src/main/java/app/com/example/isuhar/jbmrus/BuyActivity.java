@@ -31,8 +31,6 @@ import java.util.List;
 
 public class BuyActivity extends ActionBarActivity {
 
-    String NameStr, PhoneStr, EmailStr, SityStr, StreetStr, PorchStr, AprtStr, HausStr;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +62,8 @@ public class BuyActivity extends ActionBarActivity {
     }
     public void onMyClickBuy(View v) {
         if (v.getId()==R.id.buttonBuy) {
+            
+            String NameStr, PhoneStr, EmailStr, SityStr, StreetStr, PorchStr, AprtStr, HausStr;
 
             EditText Name = (EditText) findViewById(R.id.editText);
             EditText Phone = (EditText) findViewById(R.id.editText2);
@@ -88,24 +88,29 @@ public class BuyActivity extends ActionBarActivity {
         }
     }
 }
+
 class MyAsyncTask extends AsyncTask<String, Integer, Double> {
 
     @Override
     protected Double doInBackground(String... params) {
         // TODO Auto-generated method stub
-        postData(params);
+        String[] id = new String[]{//ВЗЯТЬ ДАННЫЕ ИЗ КОРЗИНЫ!!!
+                "9","21","22"
+        };
+        String[] values = new String[]{
+                "1","2","3"
+        };
+        postData(params,id,values);
         return null;
     }
 
-    public boolean postData(String[] params) {
+    public boolean postData(String[] params, String[] id, String[] value) {
 
             // Create a new HttpClient and Post Header
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("jbmrus.16mb.com/api/putOrders.php");
-
+            HttpPost httppost = new HttpPost("http://jbmrus.16mb.com/api/putOrders.php?");
             try {
                 // Add your data
-
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                 nameValuePairs.add(new BasicNameValuePair("name", params[0]));
                 nameValuePairs.add(new BasicNameValuePair("ph_number", params[1]));
@@ -115,7 +120,10 @@ class MyAsyncTask extends AsyncTask<String, Integer, Double> {
                 nameValuePairs.add(new BasicNameValuePair("haus", params[5]));
                 nameValuePairs.add(new BasicNameValuePair("porch", params[6]));
                 nameValuePairs.add(new BasicNameValuePair("aprt", params[7]));
-                //nameValuePairs.add(new BasicNameValuePair(id, value));
+
+                for (int i=0; i<id.length; i++){
+                    nameValuePairs.add(new BasicNameValuePair(id[i], value[i]));
+                }
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
                 // Execute HTTP Post Request

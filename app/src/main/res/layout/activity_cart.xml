@@ -12,10 +12,11 @@
 
 
     <Button
+        android:onClick="onMyClick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Оформить"
-        android:id="@+id/button"
+        android:id="@+id/button_cart"
         android:layout_gravity="center_horizontal" />
 
     <ListView

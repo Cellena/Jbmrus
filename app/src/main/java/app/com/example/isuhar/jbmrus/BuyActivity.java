@@ -1,37 +1,26 @@
 package app.com.example.isuhar.jbmrus;
 
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.content.Intent;
-import android.widget.Button;
 
 
-public class CartActivity extends ActionBarActivity{
-
-
+public class BuyActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
-        Button btnSubmit = (Button)findViewById(R.id.button_cart);
+        setContentView(R.layout.activity_buy);
     }
-
-
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_cart, menu);
+        getMenuInflater().inflate(R.menu.menu_buy, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -47,12 +36,4 @@ public class CartActivity extends ActionBarActivity{
 
         return super.onOptionsItemSelected(item);
     }
-
-
-        public void onMyClick(View v) {
-            if (v.getId()==R.id.button_cart) {
-                Intent intent = new Intent(this, BuyActivity.class);
-                startActivity(intent);
-            }
-        }
 }

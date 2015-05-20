@@ -19,7 +19,7 @@ import app.com.example.isuhar.jbmrus.data.CatalogContract;
  */
 public class ForecastAdapter extends CursorAdapter {
 
-    public ForecastAdapter(Context context, Cursor c, int flags) {
+    public ForecastAdapter(Context context, Cursor c, int flags, int b) {
 
         super(context, c, flags);
     }
@@ -30,7 +30,6 @@ public class ForecastAdapter extends CursorAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
         return view;
     }
-
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {

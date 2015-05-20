@@ -1,10 +1,12 @@
 package app.com.example.isuhar.jbmrus;
 
+import android.content.ContentValues;
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Contacts;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -17,35 +19,31 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.widget.AdapterView.OnItemClickListener;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import android.content.SharedPreferences;
 
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
 import app.com.example.isuhar.jbmrus.ForecastAdapter;
 import app.com.example.isuhar.jbmrus.data.CatalogProvider;
 
+import static android.provider.Contacts.Settings;
+
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    final String LOG_TAG = "myLogs";
     private static final int FORECAST_LOADER = 0;
-    private ForecastAdapter mForecastAdapter;
+    private SimpleCursorAdapter mForecastAdapter;
+    private SimpleCursorAdapter mForecastOffersAdapter;
+    ListView listView;
 
     private static final String[] FORECAST_COLUMNS = {
             CatalogContract.CategoriesEntry.TABLE_NAME + "." + CatalogContract.CategoriesEntry._ID,
@@ -85,12 +83,24 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
         getLoaderManager().initLoader(FORECAST_LOADER, null, this);
 
-        mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
+        String[] from = new String[] {CatalogContract.CategoriesEntry.COLUMN_CATEGORY_NAME};
+        int[] to = new int[] { R.id.list_item_textview_category };
+
+        mForecastAdapter = new SimpleCursorAdapter(getActivity(),R.layout.list_item_forecast,null,from,to,0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//нажатие на элемент списка
+
+                String[] from = new String[] {CatalogContract.OffersEntry.COLUMN_OFFER_NAME};
+                int[] to = new int[] { R.id.list_item_name_textview};
+                mForecastOffersAdapter = new SimpleCursorAdapter(getActivity(),R.layout.list_offers_forecast,null,from,to,0);
+            }
+        });
         return rootView;
     }
 
@@ -98,18 +108,23 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         super.onActivityCreated(savedInstanceState);
     }
+
     private void updateCategories() {
         FetchCatalogTask catalogTask = new FetchCatalogTask(getActivity());
         catalogTask.execute();//передаем параметры запроса
     }
+
     public void onStart() {
         super.onStart();
+        int count = getActivity().getContentResolver().delete(CatalogContract.CategoriesEntry.CONTENT_URI, null, null);
+        count += getActivity().getContentResolver().delete(CatalogContract.OffersEntry.CONTENT_URI, null, null);
         updateCategories();
     }
+
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         // Sort order:  Ascending, by name.
-        String sortOrder = CatalogContract.CategoriesEntry.COLUMN_CATEGORY_NAME + " ASC";
+        String sortOrder = CatalogContract.CategoriesEntry._ID + " ASC";
 
         Uri Categories = CatalogContract.CategoriesEntry.CONTENT_URI;
         /*
@@ -128,10 +143,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 sortOrder
         );
     }
+
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mForecastAdapter.swapCursor(cursor);
     }
+
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mForecastAdapter.swapCursor(null);
     }
+
 }

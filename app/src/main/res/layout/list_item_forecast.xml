@@ -13,20 +13,12 @@
         android:id="@+id/imageView"
         android:src="@drawable/ic_icon1_31_28" />
 
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_weight="0.5"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:weightSum="1">
-
         <TextView
-            android:id="@+id/list_item_date_textview"
+            android:id="@+id/list_item_textview_category"
             android:layout_width="213dp"
             android:layout_height="match_parent"
             android:text="Кофе для турки"
             android:textSize="20dp" />
 
-</LinearLayout>
+
 </LinearLayout>

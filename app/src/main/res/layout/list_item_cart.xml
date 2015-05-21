@@ -6,12 +6,6 @@
     android:orientation="horizontal"
     android:padding="5dp">
 
-    <ImageView
-        android:id="@+id/list_item_icon"
-        android:layout_width="78dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_output" />
-
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -21,8 +15,8 @@
         android:weightSum="1">
 
         <TextView
-            android:id="@+id/list_item_date_textview"
-            android:layout_width="196dp"
+            android:id="@+id/list_item_name_textview2"
+            android:layout_width="147dp"
             android:layout_height="match_parent"
             android:text="КОФЕ ЯМАЙКА БЛЮ МАУНТИН, ПОМОЛ ДЛЯ ТУРКИ, ОБЖАРКА СРЕДНЯЯ (200 Г)" />
 
@@ -35,7 +29,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/list_item_price_textview"
+            android:id="@+id/list_item_price_textview2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2100"
@@ -64,7 +58,7 @@
         android:textStyle="bold"
         android:textIsSelectable="false"
         android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
-        android:layout_weight="0.47"
+        android:layout_weight="0.78"
         android:numeric="integer"
         android:padding="1dp"
         android:background="#fffffe95" />

@@ -28,6 +28,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
+import static android.text.TextUtils.lastIndexOf;
+
 public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchCatalogTask.class.getSimpleName();
@@ -114,7 +116,7 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
                 OffersValues.put(OffersEntry._ID, offerId);
                 OffersValues.put(OffersEntry.COLUMN_CAT_KEY, offerIdCat);
                 OffersValues.put(OffersEntry.COLUMN_OFFER_PRICE, offerPrice);
-                OffersValues.put(OffersEntry.COLUMN_OFFER_IMG, offerImg);
+                OffersValues.put(OffersEntry.COLUMN_OFFER_IMG, OWM_OFFER_IMG);
 
                 oVVector.add(OffersValues);
             }

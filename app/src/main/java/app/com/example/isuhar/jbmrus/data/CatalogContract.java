@@ -21,6 +21,8 @@ public class CatalogContract {
 
     public static final String PATH_CATEGORIES = "categories";
     public static final String PATH_OFFERS = "offers";
+    public static final  String PATH_ORDER = "order";
+    public static final  String PATH_CART = "cart";
 
 
     /* Inner class that defines the table contents of the location table */
@@ -67,6 +69,22 @@ public class CatalogContract {
         public static Uri buildOffersUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+
+    }
+    public static final class OrderEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ORDER).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ORDER;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ORDER;
+
+        public static final String TABLE_NAME = "orders";
+
+        public static final String COLUMN_ORDER_OFFER_ID = "id_offer";
+        public static final String COLUMN_ORDER_OFFER_COUNT = "count_offer";
 
     }
 }

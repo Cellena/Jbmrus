@@ -15,4 +15,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_cart">Корзина</string>
     <string name="title_activity_buy">Оформление покупки</string>
+    <string name="title_activity_offers">Каталог</string>
 </resources>

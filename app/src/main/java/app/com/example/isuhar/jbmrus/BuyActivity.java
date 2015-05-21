@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -28,14 +29,25 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.com.example.isuhar.jbmrus.data.CatalogContract;
+
 
 public class BuyActivity extends ActionBarActivity {
+
+    private Intent mInfo;
+    long checkPriceLong = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy);
         Button btnBuy = (Button)findViewById(R.id.buttonBuy);
+        mInfo = getIntent();
+        checkPriceLong = getIntent().getLongExtra("checkPrice",checkPriceLong);
+        TextView checkPriceText = (TextView) findViewById(R.id.textView10);
+
+        String s = String.valueOf(checkPriceLong);
+        checkPriceText.setText(s);
     }
 
 
@@ -62,6 +74,7 @@ public class BuyActivity extends ActionBarActivity {
     }
     public void onMyClickBuy(View v) {
         if (v.getId()==R.id.buttonBuy) {
+
 
 
             String NameStr, PhoneStr, EmailStr, SityStr, StreetStr, PorchStr, AprtStr, HausStr;
@@ -93,6 +106,7 @@ public class BuyActivity extends ActionBarActivity {
                         Toast.LENGTH_LONG).show();
                 new MyAsyncTask().execute(NameStr, PhoneStr, EmailStr, SityStr, StreetStr, HausStr,
                         PorchStr, AprtStr);
+                this.getContentResolver().delete(CatalogContract.OrderEntry.CONTENT_URI, null, null);
             }
         }
     }

@@ -24,6 +24,8 @@ public class CatalogProvider extends ContentProvider {
     static final int OFFERS = 100;
     static final int OFFERS_BY_CATEGORIES = 101;
     static final int CATEGORIES = 102;
+    static final int ORDERS = 103;
+    static final int OFFERS_AND_COUNT = 104;
 
     private static final SQLiteQueryBuilder sOffersByCategoriesQueryBuilder;
 
@@ -48,6 +50,8 @@ public class CatalogProvider extends ContentProvider {
         matcher.addURI(authority, CatalogContract.PATH_OFFERS + "/*", OFFERS_BY_CATEGORIES);
 
         matcher.addURI(authority, CatalogContract.PATH_CATEGORIES, CATEGORIES);
+        matcher.addURI(authority, CatalogContract.PATH_ORDER, ORDERS);
+        matcher.addURI(authority, CatalogContract.PATH_CART, OFFERS_AND_COUNT);
 
         return matcher;
     }
@@ -65,12 +69,16 @@ public class CatalogProvider extends ContentProvider {
 
         switch (match) {
 
+            case OFFERS_AND_COUNT:
+                return CatalogContract.OffersEntry.CONTENT_TYPE;
             case OFFERS_BY_CATEGORIES:
                 return CatalogContract.OffersEntry.CONTENT_TYPE;
             case OFFERS:
                 return CatalogContract.OffersEntry.CONTENT_TYPE;
             case CATEGORIES:
                 return CatalogContract.CategoriesEntry.CONTENT_TYPE;
+            case ORDERS:
+                return CatalogContract.OffersEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -98,6 +106,20 @@ public class CatalogProvider extends ContentProvider {
 
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
+
+            case OFFERS_AND_COUNT:
+                String mySelect = "SELECT " + CatalogContract.OffersEntry.TABLE_NAME + "." + CatalogContract.OffersEntry._ID
+                        + "," + CatalogContract.OffersEntry.COLUMN_OFFER_NAME
+                        + "," + CatalogContract.OffersEntry.COLUMN_OFFER_PRICE + "," + " count(" +
+                        CatalogContract.OrderEntry.TABLE_NAME + "." + CatalogContract.OrderEntry._ID
+                        + ") as countOffers FROM " + CatalogContract.OffersEntry.TABLE_NAME
+                        + " INNER JOIN " + CatalogContract.OrderEntry.TABLE_NAME
+                        + " ON " + CatalogContract.OrderEntry.TABLE_NAME + "." + CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_ID
+                        + " = " + CatalogContract.OffersEntry.TABLE_NAME + "." + CatalogContract.OffersEntry._ID
+                        + " GROUP BY " + CatalogContract.OffersEntry.TABLE_NAME + "." + CatalogContract.OffersEntry.COLUMN_OFFER_NAME
+                        + ";";
+                retCursor = mOpenHelper.getReadableDatabase().rawQuery(mySelect, null);
+                break;
 
             case OFFERS_BY_CATEGORIES: {
                 retCursor = getOffersByCategories(uri, projection, sortOrder, selectionArgs);
@@ -127,6 +149,18 @@ public class CatalogProvider extends ContentProvider {
                 );
                 break;
             }
+            case ORDERS: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        CatalogContract.OrderEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -143,6 +177,14 @@ public class CatalogProvider extends ContentProvider {
         switch (match) {
             case OFFERS: {
                 long _id = db.insert(CatalogContract.OffersEntry.TABLE_NAME, null, values);
+                if (_id > 0)
+                    returnUri = CatalogContract.OffersEntry.buildOffersUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case ORDERS: {
+                long _id = db.insert(CatalogContract.OrderEntry.TABLE_NAME, null, values);
                 if (_id > 0)
                     returnUri = CatalogContract.OffersEntry.buildOffersUri(_id);
                 else
@@ -178,6 +220,9 @@ public class CatalogProvider extends ContentProvider {
             case OFFERS:
                 rowsDeleted = db.delete(CatalogContract.OffersEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            case ORDERS:
+                rowsDeleted = db.delete(CatalogContract.OrderEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             case CATEGORIES:
                 rowsDeleted = db.delete(CatalogContract.CategoriesEntry.TABLE_NAME, selection, selectionArgs);
                 break;
@@ -202,6 +247,9 @@ public class CatalogProvider extends ContentProvider {
         switch (match) {
             case OFFERS:
                 rowsUpdated = db.update(CatalogContract.OffersEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case ORDERS:
+                rowsUpdated = db.update(CatalogContract.OrderEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             case CATEGORIES:
                 rowsUpdated = db.update(CatalogContract.CategoriesEntry.TABLE_NAME, values, selection, selectionArgs);
@@ -228,6 +276,22 @@ public class CatalogProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(CatalogContract.OffersEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case ORDERS:
+                db.beginTransaction();
+
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(CatalogContract.OrderEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

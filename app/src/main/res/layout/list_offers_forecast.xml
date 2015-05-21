@@ -4,20 +4,15 @@
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:weightSum="1">
 
-    <ImageView
-        android:id="@+id/list_item_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:src="@drawable/ic_output"
-        android:layout_weight="7.95" />
-
-        <TextView
+    <TextView
             android:id="@+id/list_item_name_textview"
             android:layout_width="213dp"
             android:layout_height="match_parent"
-            android:text="КОФЕ ЯМАЙКА БЛЮ МАУНТИН, ПОМОЛ ДЛЯ ТУРКИ, ОБЖАРКА СРЕДНЯЯ (200 Г)" />
+            android:text="КОФЕ ЯМАЙКА БЛЮ МАУНТИН, ПОМОЛ ДЛЯ ТУРКИ, ОБЖАРКА СРЕДНЯЯ (200 Г)"
+        android:layout_weight="0.69" />
 
 
         <TextView
@@ -27,7 +22,8 @@
             android:text="2100"
             android:textStyle="bold"
             android:textIsSelectable="false"
-            android:textSize="@dimen/abc_text_size_subtitle_material_toolbar" />
+            android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
+            android:layout_weight="0.16" />
 
 
     <TextView
@@ -37,6 +33,7 @@
         android:text="Р"
         android:textStyle="bold"
         android:textIsSelectable="false"
-        android:textSize="@dimen/abc_text_size_subtitle_material_toolbar" />
+        android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
+        android:layout_weight="0.22" />
 
 </LinearLayout>

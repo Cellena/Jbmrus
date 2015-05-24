@@ -36,14 +36,21 @@ public class BuyActivity extends ActionBarActivity {
 
     private Intent mInfo;
     long checkPriceLong = 0;
+    public String[] id;
+    public String[] value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_buy);
         Button btnBuy = (Button)findViewById(R.id.buttonBuy);
+
         mInfo = getIntent();
         checkPriceLong = getIntent().getLongExtra("checkPrice",checkPriceLong);
+        id = getIntent().getStringArrayExtra("id");
+        value = getIntent().getStringArrayExtra("value");
+
         TextView checkPriceText = (TextView) findViewById(R.id.textView10);
 
         String s = String.valueOf(checkPriceLong);
@@ -75,8 +82,6 @@ public class BuyActivity extends ActionBarActivity {
     public void onMyClickBuy(View v) {
         if (v.getId()==R.id.buttonBuy) {
 
-
-
             String NameStr, PhoneStr, EmailStr, SityStr, StreetStr, PorchStr, AprtStr, HausStr;
 
             EditText Name = (EditText) findViewById(R.id.editText);
@@ -104,8 +109,9 @@ public class BuyActivity extends ActionBarActivity {
             }else {
                 Toast.makeText(this, "Спасибо за покупку!",
                         Toast.LENGTH_LONG).show();
-                new MyAsyncTask().execute(NameStr, PhoneStr, EmailStr, SityStr, StreetStr, HausStr,
+                new MyAsyncTask(id, value).execute(NameStr, PhoneStr, EmailStr, SityStr, StreetStr, HausStr,
                         PorchStr, AprtStr);
+
                 this.getContentResolver().delete(CatalogContract.OrderEntry.CONTENT_URI, null, null);
             }
         }
@@ -114,16 +120,20 @@ public class BuyActivity extends ActionBarActivity {
 
 class MyAsyncTask extends AsyncTask<String, Integer, Double> {
 
+    private String[] id;
+    private String[] value;
+
+    public MyAsyncTask (String[] myId, String[] myValue){
+        id = myId;
+        value = myValue;
+    }
+
     @Override
     protected Double doInBackground(String... params) {
         // TODO Auto-generated method stub
-        String[] id = new String[]{//ВЗЯТЬ ДАННЫЕ ИЗ КОРЗИНЫ!!!
-                "9","21","22"
-        };
-        String[] values = new String[]{
-                "1","2","3"
-        };
-        postData(params,id,values);
+
+
+        postData(params, id,value);
         return null;
     }
 
@@ -159,4 +169,6 @@ class MyAsyncTask extends AsyncTask<String, Integer, Double> {
             }
             return true;
         }
+
+
 }

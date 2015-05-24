@@ -34,6 +34,8 @@ import org.json.JSONObject;
 import android.widget.AdapterView.OnItemClickListener;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
@@ -109,7 +111,7 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
         listView.setAdapter(mForecastAdapter);
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//нажатие на элемент списка
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 
             }
@@ -154,17 +156,35 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mForecastAdapter.getCursor().moveToFirst();
 
-                while(!mForecastAdapter.getCursor().isClosed()){
+                boolean checkLast = false;
+                checkPrice = 0;
+                ArrayList<String> id = new ArrayList<String>();
+                ArrayList<String> value = new ArrayList<String>();
+
+                mForecastAdapter.getCursor().moveToFirst();
+                while(!checkLast && mForecastAdapter.getCursor().getColumnCount()!=0){
 
                     checkPrice += mForecastAdapter.getCursor().getInt(2)*mForecastAdapter.getCursor().getInt(3);
-                    if (mForecastAdapter.getCursor().isLast()) mForecastAdapter.getCursor().close();
+
+                    id.add(String.valueOf(mForecastAdapter.getCursor().getInt(0)));
+                    value.add(String.valueOf(mForecastAdapter.getCursor().getInt(3)));
+
+                    if (mForecastAdapter.getCursor().isLast()) checkLast = true;
                     mForecastAdapter.getCursor().moveToNext();
 
                 }
+
+
+                String[] idArray = new String[ id.size() ];
+                String[] valueArray = new String[ value.size() ];
+                id.toArray( idArray );
+                value.toArray( valueArray );
+
                 Intent intent = new Intent(getActivity(), BuyActivity.class);
                 intent.putExtra("checkPrice", checkPrice);
+                intent.putExtra("id",idArray);
+                intent.putExtra("value",valueArray);
                 startActivity(intent);
                 //checkPrice = 0;
             }

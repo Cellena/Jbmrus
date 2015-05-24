@@ -114,7 +114,7 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
         listView.setAdapter(mForecastAdapter);
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//нажатие на элемент списка
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 ContentValues OrderValues = new ContentValues();
 

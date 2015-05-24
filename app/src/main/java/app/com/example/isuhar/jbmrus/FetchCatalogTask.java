@@ -37,9 +37,13 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
     private final String LOG_TAG = FetchCatalogTask.class.getSimpleName();
 
     private final Context mContext;
+    private boolean mySwitchJson = true;
+    private String myCategoryId = "";
 
-    public FetchCatalogTask(Context context) {
+    public FetchCatalogTask(Context context, boolean switchJson, String categoryId) {
         mContext = context;
+        mySwitchJson = switchJson;
+        myCategoryId = categoryId;
     }
 
     private boolean DEBUG = true;
@@ -47,95 +51,108 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
     private void getCatalogDataFromJson(String forecastJsonStr)
             throws JSONException {
 
-        //final int OWM_CATEGORIES = 0;
-        final String OWM_CATEGORIES_ID = "id";
-        final String OWM_CATEGORIES_NAME = "name";
+        if (mySwitchJson) {
 
-        //final String OWM_OFFERS = "1";
-        final String OWM_OFFER_ID = "id";
-        final String OWM_OFFER_NAME = "name";
-        final String OWM_OFFER_CATEGORY_ID = "id_category";
-        final String OWM_OFFER_PRICE = "price";
-        final String OWM_OFFER_IMG = "img";
+            final int OWM_CATEGORIES = 0;
+            final String OWM_CATEGORIES_ID = "id";
+            final String OWM_CATEGORIES_NAME = "name";
 
-        try {
-            //Прием и сохранение катеорий
-            //JSONObject forecastJson = new JSONObject(forecastJsonStr);
-            JSONArray myJSONArray = new JSONArray(forecastJsonStr);//не принимает инт
-            JSONArray categoriesArray = myJSONArray.getJSONArray(0);
 
-            JSONObject cat = null;
-            String categoryName = null;
-            int categoryId = 0;
+            try {
+                //Прием и сохранение катеорий
+                //JSONObject forecastJson = new JSONObject(forecastJsonStr);
+                JSONArray categoriesArray = new JSONArray(forecastJsonStr);
 
-            Vector<ContentValues> cVVector = new Vector<ContentValues>(categoriesArray.length());
+                JSONObject cat = null;
+                String categoryName = null;
+                int categoryId = 0;
 
-            for (int i = 0; i < categoriesArray.length(); i++){
+                Vector<ContentValues> cVVector = new Vector<ContentValues>(categoriesArray.length());
 
-                cat = categoriesArray.getJSONObject(i);
-                categoryName = cat.getString(OWM_CATEGORIES_NAME);
-                categoryId = cat.getInt(OWM_CATEGORIES_ID);
+                for (int i = 0; i < categoriesArray.length(); i++) {
 
-                ContentValues CategoriesValues = new ContentValues();
+                    cat = categoriesArray.getJSONObject(i);
+                    categoryName = cat.getString(OWM_CATEGORIES_NAME);
+                    categoryId = cat.getInt(OWM_CATEGORIES_ID);
 
-                CategoriesValues.put(CategoriesEntry._ID, categoryId);
-                CategoriesValues.put(CategoriesEntry.COLUMN_CATEGORY_NAME, categoryName);
+                    ContentValues CategoriesValues = new ContentValues();
 
-                cVVector.add(CategoriesValues);
+                    CategoriesValues.put(CategoriesEntry._ID, categoryId);
+                    CategoriesValues.put(CategoriesEntry.COLUMN_CATEGORY_NAME, categoryName);
+
+                    cVVector.add(CategoriesValues);
+                }
+
+                int inserted = 0;
+                // add to database
+                if (cVVector.size() > 0) {
+                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                    cVVector.toArray(cvArray);
+                    inserted = mContext.getContentResolver().bulkInsert(CategoriesEntry.CONTENT_URI, cvArray);
+                }
+                Log.d(LOG_TAG, "FetchCatalogTask Complete. " + inserted + " Inserted");
+
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
             }
+        }
+        else {
+            try {
+                JSONArray offersArray = new JSONArray(forecastJsonStr);
+                //прием и сохранение товаров
+                int inserted = 0;
+                final int OWM_OFFERS = 1;
+                final String OWM_OFFER_ID = "id";
+                final String OWM_OFFER_NAME = "name";
+                final String OWM_OFFER_CATEGORY_ID = "id_category";
+                final String OWM_OFFER_PRICE = "price";
+                final String OWM_OFFER_IMG = "img";
 
-            int inserted = 0;
-            // add to database
-            if ( cVVector.size() > 0 ) {
-                ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                cVVector.toArray(cvArray);
-                inserted = mContext.getContentResolver().bulkInsert(CategoriesEntry.CONTENT_URI, cvArray);
+                //JSONArray offersArray = myJSONArray.getJSONArray(OWM_OFFERS);
+                JSONObject offer = null;
+                String offerName = null;
+                int offerId = 0;
+                int offerIdCat = 0;
+                double offerPrice = 0;
+                String offerImg = null;
+
+                Vector<ContentValues> oVVector = new Vector<ContentValues>(offersArray.length());
+
+                for (int i = 0; i < offersArray.length(); i++) {
+
+                    offer = offersArray.getJSONObject(i);
+                    offerName = offer.getString(OWM_OFFER_NAME);
+                    offerId = offer.getInt(OWM_OFFER_ID);
+                    offerIdCat = offer.getInt(OWM_OFFER_CATEGORY_ID);
+                    offerPrice = offer.getDouble(OWM_OFFER_PRICE);
+                    offerImg = offer.getString(OWM_OFFER_IMG);
+
+                    ContentValues OffersValues = new ContentValues();
+
+                    OffersValues.put(OffersEntry.COLUMN_OFFER_NAME, offerName);
+                    OffersValues.put(OffersEntry._ID, offerId);
+                    OffersValues.put(OffersEntry.COLUMN_CAT_KEY, offerIdCat);
+                    OffersValues.put(OffersEntry.COLUMN_OFFER_PRICE, offerPrice);
+                    OffersValues.put(OffersEntry.COLUMN_OFFER_IMG, OWM_OFFER_IMG);
+
+                    oVVector.add(OffersValues);
+                }
+
+                inserted = 0;
+                // add to database
+                if (oVVector.size() > 0) {
+                    ContentValues[] cvArray = new ContentValues[oVVector.size()];
+                    oVVector.toArray(cvArray);
+                    inserted = mContext.getContentResolver().bulkInsert(OffersEntry.CONTENT_URI, cvArray);
+                }
+
+                Log.d(LOG_TAG, "FetchCatalogTask Complete. " + inserted + " Inserted");
+
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
             }
-
-            //прием и сохранение товаров
-            JSONArray offersArray = myJSONArray.getJSONArray(1);
-            JSONObject offer = null;
-            String offerName = null;
-            int offerId = 0;
-            int offerIdCat = 0;
-            double offerPrice = 0;
-            String offerImg = null;
-
-            Vector<ContentValues> oVVector = new Vector<ContentValues>(offersArray.length());
-
-            for (int i = 0; i < offersArray.length(); i++){
-
-                offer = offersArray.getJSONObject(i);
-                offerName = offer.getString(OWM_OFFER_NAME);
-                offerId = offer.getInt(OWM_OFFER_ID);
-                offerIdCat = offer.getInt(OWM_OFFER_CATEGORY_ID);
-                offerPrice = offer.getDouble(OWM_OFFER_PRICE);
-                offerImg = offer.getString(OWM_OFFER_IMG);
-
-                ContentValues OffersValues = new ContentValues();
-
-                OffersValues.put(OffersEntry.COLUMN_OFFER_NAME,offerName);
-                OffersValues.put(OffersEntry._ID, offerId);
-                OffersValues.put(OffersEntry.COLUMN_CAT_KEY, offerIdCat);
-                OffersValues.put(OffersEntry.COLUMN_OFFER_PRICE, offerPrice);
-                OffersValues.put(OffersEntry.COLUMN_OFFER_IMG, OWM_OFFER_IMG);
-
-                oVVector.add(OffersValues);
-            }
-
-            inserted = 0;
-            // add to database
-            if ( oVVector.size() > 0 ) {
-                ContentValues[] cvArray = new ContentValues[oVVector.size()];
-                oVVector.toArray(cvArray);
-                inserted = mContext.getContentResolver().bulkInsert(OffersEntry.CONTENT_URI, cvArray);
-            }
-
-            Log.d(LOG_TAG, "FetchCatalogTask Complete. " + inserted + " Inserted");
-
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
-            e.printStackTrace();
         }
     }
 
@@ -152,13 +169,27 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
                     "http://jbmrus.16mb.com/api/?";
             final String QUERY_PARAM = "get";
             final String IMG_PARAM = "dpi";
-            String get = "ALL";
-            String dpi = "xxhdpi";
+            final String CATEGORY_PARAM = "categoryId";
+            final String dpi = "xxhdpi";
+            Uri builtUri;
 
-            Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                    .appendQueryParameter(QUERY_PARAM, get)
-                    .appendQueryParameter(IMG_PARAM, dpi)
-                    .build();
+            if (mySwitchJson) {
+                final String get = "categories";
+
+                builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                        .appendQueryParameter(QUERY_PARAM, get)
+                        .appendQueryParameter(IMG_PARAM, dpi)
+                        .build();
+            }
+            else {
+                final String get = "offers";
+
+                builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                        .appendQueryParameter(QUERY_PARAM, get)
+                        .appendQueryParameter(IMG_PARAM, dpi)
+                        .appendQueryParameter(CATEGORY_PARAM, myCategoryId)
+                        .build();
+            }
 
             URL url = new URL(builtUri.toString());
 

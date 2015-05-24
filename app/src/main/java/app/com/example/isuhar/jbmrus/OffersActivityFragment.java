@@ -25,9 +25,11 @@ import android.widget.Toast;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.widget.AdapterView.OnItemClickListener;
 
 
@@ -47,6 +49,7 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
     ListView listView;
     Menu menu;
     MenuItem bedMenuItem;
+    long id = 0;
 
 
     private static final String[] FORECAST_COLUMNS = {
@@ -101,11 +104,12 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
 
         getLoaderManager().initLoader(FORECAST_LOADER, null, this);
 
-        String[] from = new String[] {CatalogContract.OffersEntry.COLUMN_OFFER_NAME,
+        String[] from = new String[]{CatalogContract.OffersEntry.COLUMN_OFFER_NAME,
                 CatalogContract.OffersEntry.COLUMN_OFFER_PRICE};
-        int[] to = new int[] { R.id.list_item_name_textview, R.id.list_item_price_textview };
+        int[] to = new int[]{R.id.list_item_name_textview, R.id.list_item_price_textview};
 
-        mForecastAdapter = new SimpleCursorAdapter(getActivity(),R.layout.list_offers_forecast,null,from,to,0);
+        id = getActivity().getIntent().getLongExtra("id", id);
+        mForecastAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_offers_forecast, null, from, to, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_offers, container, false);
         final Vector<ContentValues> oVVector = new Vector<ContentValues>(1);
@@ -144,14 +148,26 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
         super.onActivityCreated(savedInstanceState);
     }
 
+    private void updateOffers() {
+        int count = getActivity().getContentResolver().delete(
+                CatalogContract.OffersEntry.CONTENT_URI,
+                CatalogContract.OffersEntry.TABLE_NAME + '.' + CatalogContract.OffersEntry.COLUMN_CAT_KEY + " = ?",
+                new String[]{String.valueOf(id)}
+        );
+        FetchCatalogTask catalogTask = new FetchCatalogTask(getActivity(), false, String.valueOf(id));
+        catalogTask.execute();//передаем параметры запроса
+    }
+
     public void onStart() {
         super.onStart();
+        updateOffers();
     }
 
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         // Sort order:  Ascending, by name.
         String sortOrder = CatalogContract.OffersEntry._ID + " ASC";
+        id = getActivity().getIntent().getLongExtra("id", id);
 
         Uri Categories = CatalogContract.OffersEntry.CONTENT_URI;
         /*
@@ -160,8 +176,6 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
 
         Uri CatalogUri = CatalogContract.CategoriesEntry.buildCategoriesUri(_id);
         */
-        long id = 0;
-        id = getActivity().getIntent().getLongExtra("id",id);
 
         String strId = String.valueOf(id);
 

@@ -127,18 +127,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void updateCategories() {
         int count = getActivity().getContentResolver().delete(CatalogContract.CategoriesEntry.CONTENT_URI, null, null);
-        count += getActivity().getContentResolver().delete(CatalogContract.OffersEntry.CONTENT_URI, null, null);
-        FetchCatalogTask catalogTask = new FetchCatalogTask(getActivity());
+        //count += getActivity().getContentResolver().delete(CatalogContract.OffersEntry.CONTENT_URI, null, null);
+        FetchCatalogTask catalogTask = new FetchCatalogTask(getActivity(), true, null);
         catalogTask.execute();//передаем параметры запроса
     }
 
     public void onStart() {
         super.onStart();
-        if (getActivity().getContentResolver().query(
-                CatalogContract.CategoriesEntry.CONTENT_URI,
-                FORECAST_COLUMNS, null, null, null, null).getCount() == 0) updateCategories();
+        updateCategories();
     }
-
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         // Sort order:  Ascending, by name.

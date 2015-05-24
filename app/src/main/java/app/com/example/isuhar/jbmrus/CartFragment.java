@@ -1,5 +1,6 @@
 package app.com.example.isuhar.jbmrus;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -43,6 +44,7 @@ import app.com.example.isuhar.jbmrus.ForecastAdapter;
 import app.com.example.isuhar.jbmrus.data.CatalogProvider;
 
 import static android.provider.Contacts.Settings;
+import static android.widget.Toast.LENGTH_LONG;
 
 public class CartFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -109,11 +111,25 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
         listView = (ListView) rootView.findViewById(R.id.listView_cart2);
         button = (Button) rootView.findViewById(R.id.button_cart);
         listView.setAdapter(mForecastAdapter);
+
         listView.setOnItemClickListener(new OnItemClickListener() {
+
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//������� �� ������� ������
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Uri my = ContentUris.withAppendedId(CatalogContract.OrderEntry.CONTENT_URI, id);
+                int rowDeleted = getActivity().getContentResolver().delete(
+                        my,
+                        null,
+                        new String[]{String.valueOf(id)}
+                );
 
+                if (rowDeleted > 0) {
+                    Toast.makeText(getActivity(), "Товар удален",
+                            LENGTH_LONG).show();
+                    mForecastAdapter.getCursor().requery();
+                    mForecastAdapter.notifyDataSetChanged();
+                }
             }
         });
         return rootView;
@@ -130,16 +146,8 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
 
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        // Sort order:  Ascending, by name.
         final Uri CONTENT_URI =
                 CatalogContract.BASE_CONTENT_URI.buildUpon().appendPath(CatalogContract.PATH_CART).build();
-
-        /*
-        Loader asd = new CursorLoader(getActivity(),Categories,null,null,null,sortOrder);
-        long _id = asd.getId();
-
-        Uri CatalogUri = CatalogContract.CategoriesEntry.buildCategoriesUri(_id);
-        */
 
         return new CursorLoader(
                 getActivity(),
@@ -152,42 +160,49 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     public void onLoadFinished(final Loader<Cursor> cursorLoader, Cursor cursor) {
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                boolean checkLast = false;
-                checkPrice = 0;
-                ArrayList<String> id = new ArrayList<String>();
-                ArrayList<String> value = new ArrayList<String>();
-
-                mForecastAdapter.getCursor().moveToFirst();
-                while(!checkLast && mForecastAdapter.getCursor().getColumnCount()!=0){
-
-                    checkPrice += mForecastAdapter.getCursor().getInt(2)*mForecastAdapter.getCursor().getInt(3);
-
-                    id.add(String.valueOf(mForecastAdapter.getCursor().getInt(0)));
-                    value.add(String.valueOf(mForecastAdapter.getCursor().getInt(3)));
-
-                    if (mForecastAdapter.getCursor().isLast()) checkLast = true;
-                    mForecastAdapter.getCursor().moveToNext();
-
+                if (listView.getCount() == 0) {
+                    Toast.makeText(getActivity(), "Пожалуйста, выберите товар",
+                            LENGTH_LONG).show();
                 }
+                else {
+
+                    boolean checkLast = false;
+                    checkPrice = 0;
+                    ArrayList<String> id = new ArrayList<String>();
+                    ArrayList<String> value = new ArrayList<String>();
+
+                    mForecastAdapter.getCursor().moveToFirst();
+                    while (!checkLast && mForecastAdapter.getCursor().getCount() != 0) {
+
+                        checkPrice += mForecastAdapter.getCursor().getInt(2) * mForecastAdapter.getCursor().getInt(3);
+
+                        id.add(String.valueOf(mForecastAdapter.getCursor().getInt(0)));
+                        value.add(String.valueOf(mForecastAdapter.getCursor().getInt(3)));
+
+                        if (mForecastAdapter.getCursor().isLast()) checkLast = true;
+                        mForecastAdapter.getCursor().moveToNext();
+
+                    }
 
 
-                String[] idArray = new String[ id.size() ];
-                String[] valueArray = new String[ value.size() ];
-                id.toArray( idArray );
-                value.toArray( valueArray );
+                    String[] idArray = new String[id.size()];
+                    String[] valueArray = new String[value.size()];
+                    id.toArray(idArray);
+                    value.toArray(valueArray);
 
-                Intent intent = new Intent(getActivity(), BuyActivity.class);
-                intent.putExtra("checkPrice", checkPrice);
-                intent.putExtra("id",idArray);
-                intent.putExtra("value",valueArray);
-                startActivity(intent);
-                //checkPrice = 0;
+                    Intent intent = new Intent(getActivity(), BuyActivity.class);
+                    intent.putExtra("checkPrice", checkPrice);
+                    intent.putExtra("id", idArray);
+                    intent.putExtra("value", valueArray);
+                    startActivity(intent);
+                    //checkPrice = 0;
+                }
             }
+
 
         });
 

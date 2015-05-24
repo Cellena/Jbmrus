@@ -136,7 +136,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onStart();
         if (getActivity().getContentResolver().query(
                 CatalogContract.CategoriesEntry.CONTENT_URI,
-                FORECAST_COLUMNS, null, null, null, null).getColumnCount() == 0) updateCategories();
+                FORECAST_COLUMNS, null, null, null, null).getCount() == 0) updateCategories();
     }
 
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

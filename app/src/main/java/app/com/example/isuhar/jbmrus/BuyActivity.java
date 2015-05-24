@@ -44,12 +44,12 @@ public class BuyActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_buy);
-        Button btnBuy = (Button)findViewById(R.id.buttonBuy);
 
         mInfo = getIntent();
-        checkPriceLong = getIntent().getLongExtra("checkPrice",checkPriceLong);
-        id = getIntent().getStringArrayExtra("id");
-        value = getIntent().getStringArrayExtra("value");
+
+        checkPriceLong = mInfo.getLongExtra("checkPrice",checkPriceLong);
+        id = mInfo.getStringArrayExtra("id");
+        value = mInfo.getStringArrayExtra("value");
 
         TextView checkPriceText = (TextView) findViewById(R.id.textView10);
 
@@ -133,11 +133,11 @@ class MyAsyncTask extends AsyncTask<String, Integer, Double> {
         // TODO Auto-generated method stub
 
 
-        postData(params, id,value);
+        postData(params);
         return null;
     }
 
-    public boolean postData(String[] params, String[] id, String[] value) {
+    public boolean postData(String[] params) {
 
             // Create a new HttpClient and Post Header
             HttpClient httpclient = new DefaultHttpClient();

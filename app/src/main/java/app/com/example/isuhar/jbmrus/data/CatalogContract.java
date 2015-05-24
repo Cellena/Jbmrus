@@ -84,7 +84,6 @@ public class CatalogContract {
         public static final String TABLE_NAME = "orders";
 
         public static final String COLUMN_ORDER_OFFER_ID = "id_offer";
-        public static final String COLUMN_ORDER_OFFER_COUNT = "count_offer";
 
     }
 }

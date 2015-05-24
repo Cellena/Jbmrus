@@ -26,6 +26,7 @@ public class CatalogProvider extends ContentProvider {
     static final int CATEGORIES = 102;
     static final int ORDERS = 103;
     static final int OFFERS_AND_COUNT = 104;
+    static final int ORDERS_DELETE = 105;
 
     private static final SQLiteQueryBuilder sOffersByCategoriesQueryBuilder;
 
@@ -48,7 +49,7 @@ public class CatalogProvider extends ContentProvider {
 
         matcher.addURI(authority, CatalogContract.PATH_OFFERS, OFFERS);
         matcher.addURI(authority, CatalogContract.PATH_OFFERS + "/*", OFFERS_BY_CATEGORIES);
-
+        matcher.addURI(authority, CatalogContract.PATH_ORDER + "/#", ORDERS_DELETE);
         matcher.addURI(authority, CatalogContract.PATH_CATEGORIES, CATEGORIES);
         matcher.addURI(authority, CatalogContract.PATH_ORDER, ORDERS);
         matcher.addURI(authority, CatalogContract.PATH_CART, OFFERS_AND_COUNT);
@@ -69,6 +70,8 @@ public class CatalogProvider extends ContentProvider {
 
         switch (match) {
 
+            case ORDERS_DELETE:
+                return CatalogContract.OrderEntry.CONTENT_ITEM_TYPE;
             case OFFERS_AND_COUNT:
                 return CatalogContract.OffersEntry.CONTENT_TYPE;
             case OFFERS_BY_CATEGORIES:
@@ -217,6 +220,13 @@ public class CatalogProvider extends ContentProvider {
         }
 
         switch (match) {
+            case ORDERS_DELETE:
+                final String DELETE_ROW = "delete from " + CatalogContract.OrderEntry.TABLE_NAME + " where _id in " +
+                        "(select _id from " + CatalogContract.OrderEntry.TABLE_NAME + " where "
+                        + CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_ID + " = " + selectionArgs[0] + " order by _id limit 1)";
+                db.execSQL(DELETE_ROW);
+                rowsDeleted = 1;
+                break;
             case OFFERS:
                 rowsDeleted = db.delete(CatalogContract.OffersEntry.TABLE_NAME, selection, selectionArgs);
                 break;

@@ -13,7 +13,7 @@ import app.com.example.isuhar.jbmrus.data.CatalogContract.OffersEntry;
 
 public class CatalogDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     static final String DATABASE_NAME = "catalog.db";
 
@@ -46,7 +46,6 @@ public class CatalogDbHelper extends SQLiteOpenHelper {
                 CatalogContract.OrderEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
 
                 CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_ID + " INTEGER NOT NULL, " +
-                CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_COUNT + " INTEGER NOT NULL, " +
 
                 " FOREIGN KEY (" + CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_ID + ") REFERENCES " +
                 CatalogContract.OffersEntry.TABLE_NAME + " (" + OffersEntry._ID +

@@ -119,7 +119,6 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
                 ContentValues OrderValues = new ContentValues();
 
                 OrderValues.put(CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_ID, id);
-                OrderValues.put(CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_COUNT, 1);
 
                 getActivity().getContentResolver().insert(CatalogContract.OrderEntry.CONTENT_URI, OrderValues);
                 int countOrders;

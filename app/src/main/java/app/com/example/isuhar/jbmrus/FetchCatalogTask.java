@@ -7,6 +7,8 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.format.Time;
@@ -15,12 +17,14 @@ import android.util.Log;
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
 import app.com.example.isuhar.jbmrus.data.CatalogContract.OffersEntry;
 import app.com.example.isuhar.jbmrus.data.CatalogContract.CategoriesEntry;
+import app.com.example.isuhar.jbmrus.util.DownloadImageTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -128,13 +132,14 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
                     offerPrice = offer.getDouble(OWM_OFFER_PRICE);
                     offerImg = offer.getString(OWM_OFFER_IMG);
 
+
                     ContentValues OffersValues = new ContentValues();
 
                     OffersValues.put(OffersEntry.COLUMN_OFFER_NAME, offerName);
                     OffersValues.put(OffersEntry._ID, offerId);
                     OffersValues.put(OffersEntry.COLUMN_CAT_KEY, offerIdCat);
                     OffersValues.put(OffersEntry.COLUMN_OFFER_PRICE, offerPrice);
-                    OffersValues.put(OffersEntry.COLUMN_OFFER_IMG, OWM_OFFER_IMG);
+                    OffersValues.put(OffersEntry.COLUMN_OFFER_IMG, offerImg);
 
                     oVVector.add(OffersValues);
                 }

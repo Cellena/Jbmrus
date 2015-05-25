@@ -38,6 +38,7 @@ import java.util.Vector;
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
 import app.com.example.isuhar.jbmrus.ForecastAdapter;
 import app.com.example.isuhar.jbmrus.data.CatalogProvider;
+import app.com.example.isuhar.jbmrus.util.DiskLruImageCache;
 
 import static android.provider.Contacts.Settings;
 
@@ -45,7 +46,7 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
 
     final String LOG_TAG = "myLogs";
     private static final int FORECAST_LOADER = 1;
-    private SimpleCursorAdapter mForecastAdapter;
+    private ForecastAdapter mForecastAdapter;
     ListView listView;
     Menu menu;
     MenuItem bedMenuItem;
@@ -55,7 +56,8 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
     private static final String[] FORECAST_COLUMNS = {
             CatalogContract.OffersEntry.TABLE_NAME + "." + CatalogContract.OffersEntry._ID,
             CatalogContract.OffersEntry.COLUMN_OFFER_NAME,
-            CatalogContract.OffersEntry.COLUMN_OFFER_PRICE
+            CatalogContract.OffersEntry.COLUMN_OFFER_PRICE,
+            CatalogContract.OffersEntry.COLUMN_OFFER_IMG
     };
 
     private static final String[] ORDER_COLUMNS = {
@@ -102,20 +104,16 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        id = getActivity().getIntent().getLongExtra("id", id);
         getLoaderManager().initLoader(FORECAST_LOADER, null, this);
 
-        String[] from = new String[]{CatalogContract.OffersEntry.COLUMN_OFFER_NAME,
-                CatalogContract.OffersEntry.COLUMN_OFFER_PRICE};
-        int[] to = new int[]{R.id.list_item_name_textview, R.id.list_item_price_textview};
-
-        id = getActivity().getIntent().getLongExtra("id", id);
-        mForecastAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_offers_forecast, null, from, to, 0);
+        mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_offers, container, false);
-        final Vector<ContentValues> oVVector = new Vector<ContentValues>(1);
 
         listView = (ListView) rootView.findViewById(R.id.listView_offers);
         listView.setAdapter(mForecastAdapter);
+
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -165,17 +163,11 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
 
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        // Sort order:  Ascending, by name.
         String sortOrder = CatalogContract.OffersEntry._ID + " ASC";
         id = getActivity().getIntent().getLongExtra("id", id);
 
         Uri Categories = CatalogContract.OffersEntry.CONTENT_URI;
-        /*
-        Loader asd = new CursorLoader(getActivity(),Categories,null,null,null,sortOrder);
-        long _id = asd.getId();
 
-        Uri CatalogUri = CatalogContract.CategoriesEntry.buildCategoriesUri(_id);
-        */
 
         String strId = String.valueOf(id);
 
@@ -190,6 +182,8 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+
+
         mForecastAdapter.swapCursor(cursor);
     }
 

@@ -35,6 +35,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
 import app.com.example.isuhar.jbmrus.ForecastAdapter;
 import app.com.example.isuhar.jbmrus.data.CatalogProvider;
+import app.com.example.isuhar.jbmrus.util.DiskLruImageCache;
 
 import static android.provider.Contacts.Settings;
 
@@ -103,7 +104,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         String[] from = new String[] {CatalogContract.CategoriesEntry.COLUMN_CATEGORY_NAME};
         int[] to = new int[] { R.id.list_item_textview_category };
 
-        mForecastAdapter = new SimpleCursorAdapter(getActivity(),R.layout.list_item_forecast,null,from,to,0);
+        mForecastAdapter = new SimpleCursorAdapter(getActivity(),R.layout.list_item_forecast,null,from,to, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -126,6 +127,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateCategories() {
+
+        final int DISK_CACHE_SIZE = 1024 * 1024 * 100; // 10MB
+        final String DISK_CACHE_SUBDIR = "images";
+        DiskLruImageCache myImgCache = new DiskLruImageCache(getActivity(), DISK_CACHE_SUBDIR, DISK_CACHE_SIZE);
+        myImgCache.clearCache();
+
+
         int count = getActivity().getContentResolver().delete(CatalogContract.CategoriesEntry.CONTENT_URI, null, null);
         //count += getActivity().getContentResolver().delete(CatalogContract.OffersEntry.CONTENT_URI, null, null);
         FetchCatalogTask catalogTask = new FetchCatalogTask(getActivity(), true, null);

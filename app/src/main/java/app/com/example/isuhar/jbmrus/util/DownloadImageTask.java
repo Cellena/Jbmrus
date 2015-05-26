@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.LruCache;
 import android.widget.ImageView;
 
 
@@ -19,9 +20,12 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     DiskLruImageCache myImgCache;
     String imageKey;
     ImageView myImage;
+    LruCache<String, Bitmap> myMemoryCache;
+    Bitmap bitmap;
 
-    public DownloadImageTask(DiskLruImageCache imgCache, ImageView image){
-
+    public DownloadImageTask(DiskLruImageCache imgCache, ImageView image,
+                             LruCache<String, Bitmap> mMemoryCache){
+        myMemoryCache = mMemoryCache;
         myImgCache = imgCache;
         myImage = image;
     }
@@ -34,20 +38,32 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         parts = imageKey.split(Pattern.quote("."));
         imageKey = parts[0];
 
-        Bitmap mIcon = null;
-        try {
-            InputStream in = new java.net.URL(urlDisplay).openStream();
-            mIcon = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
+        bitmap =  myMemoryCache.get(imageKey);
+
+        if (bitmap==null) {
+            bitmap = myImgCache.getBitmap(imageKey);
+            if (bitmap == null) { // Not found in disk cache
+                try {
+                    InputStream in = new java.net.URL(urlDisplay).openStream();
+                    bitmap = BitmapFactory.decodeStream(in);
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                }
+                myImgCache.put(imageKey,bitmap);
+                myMemoryCache.put(imageKey, bitmap);
+            }
+            else {
+                myMemoryCache.put(imageKey, bitmap);
+            }
         }
 
-        return mIcon;
+        return bitmap;
     }
 
+    @Override
     protected void onPostExecute(Bitmap result) {
-        myImgCache.put(imageKey, result);
-        myImage.setImageBitmap(result);
+        myImage.setImageBitmap(bitmap);
     }
+
 }

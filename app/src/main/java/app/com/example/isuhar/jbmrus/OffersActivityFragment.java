@@ -158,11 +158,12 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
 
     public void onStart() {
         super.onStart();
+        id = getActivity().getIntent().getLongExtra("id", id);
         if (getActivity().getContentResolver().query(
                 CatalogContract.OffersEntry.CONTENT_URI,
                 FORECAST_COLUMNS,
-                null,
-                null,
+                CatalogContract.OffersEntry.TABLE_NAME + '.' + CatalogContract.OffersEntry.COLUMN_CAT_KEY + " = ?",
+                new String[]{String.valueOf(id)},
                 null
         ).getCount()==0) updateOffers();
     }

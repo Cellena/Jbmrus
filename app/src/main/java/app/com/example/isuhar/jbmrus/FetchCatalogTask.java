@@ -175,7 +175,7 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
             final String QUERY_PARAM = "get";
             final String IMG_PARAM = "dpi";
             final String CATEGORY_PARAM = "categoryId";
-            final String dpi = "xxhdpi";
+            final String dpi = "xhdpi";
             Uri builtUri;
 
             if (mySwitchJson) {

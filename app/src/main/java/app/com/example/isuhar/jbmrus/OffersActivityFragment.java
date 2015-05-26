@@ -158,7 +158,13 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
 
     public void onStart() {
         super.onStart();
-        updateOffers();
+        if (getActivity().getContentResolver().query(
+                CatalogContract.OffersEntry.CONTENT_URI,
+                FORECAST_COLUMNS,
+                null,
+                null,
+                null
+        ).getCount()==0) updateOffers();
     }
 
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
 
@@ -104,7 +105,11 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
 
                 OrderValues.put(CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_ID, id);
 
-                getActivity().getContentResolver().insert(CatalogContract.OrderEntry.CONTENT_URI, OrderValues);
+                Uri inserted = getActivity().getContentResolver().insert(CatalogContract.OrderEntry.CONTENT_URI, OrderValues);
+                if (inserted!=null) {
+                    Toast.makeText(getActivity(), "Added!",
+                        Toast.LENGTH_LONG).show();
+                }
                 int countOrders;
                 Cursor orderCursor = getActivity().getContentResolver().query(
                         CatalogContract.OrderEntry.CONTENT_URI,

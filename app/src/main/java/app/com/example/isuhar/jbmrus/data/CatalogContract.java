@@ -47,6 +47,8 @@ public class CatalogContract {
 
     public static final class OffersEntry implements BaseColumns {
 
+        public static final String COUNT_OFFERS = "countOffers";
+
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_OFFERS).build();
 

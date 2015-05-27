@@ -49,7 +49,7 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
             CatalogContract.OffersEntry.TABLE_NAME + "." + CatalogContract.OffersEntry._ID,
             CatalogContract.OffersEntry.COLUMN_OFFER_NAME,
             CatalogContract.OffersEntry.COLUMN_OFFER_PRICE,
-            "countOffers",
+            CatalogContract.OffersEntry.COUNT_OFFERS,
             CatalogContract.OffersEntry.COLUMN_OFFER_IMG
     };
 
@@ -105,7 +105,7 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
                 );
 
                 if (rowDeleted > 0) {
-                    Toast.makeText(getActivity(), "Товар удален",
+                    Toast.makeText(getActivity(), "Deleted",
                             LENGTH_LONG).show();
                     mForecastAdapter.getCursor().requery();
                     mForecastAdapter.notifyDataSetChanged();
@@ -145,7 +145,7 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onClick(View view) {
 
                 if (listView.getCount() == 0) {
-                    Toast.makeText(getActivity(), "Пожалуйста, выберите товар",
+                    Toast.makeText(getActivity(), "Make choice",
                             LENGTH_LONG).show();
                 }
                 else {

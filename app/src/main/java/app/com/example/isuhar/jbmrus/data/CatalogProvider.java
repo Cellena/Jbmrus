@@ -127,7 +127,7 @@ public class CatalogProvider extends ContentProvider {
                         + "," + CatalogContract.OffersEntry.COLUMN_OFFER_NAME
                         + "," + CatalogContract.OffersEntry.COLUMN_OFFER_PRICE + "," + " count(" +
                         CatalogContract.OrderEntry.TABLE_NAME + "." + CatalogContract.OrderEntry._ID
-                        + ") as countOffers, "+ CatalogContract.OffersEntry.COLUMN_OFFER_IMG + " FROM "
+                        + ") as " + CatalogContract.OffersEntry.COUNT_OFFERS +", "+ CatalogContract.OffersEntry.COLUMN_OFFER_IMG + " FROM "
                         + CatalogContract.OffersEntry.TABLE_NAME
                         + " INNER JOIN " + CatalogContract.OrderEntry.TABLE_NAME
                         + " ON " + CatalogContract.OrderEntry.TABLE_NAME + "." + CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_ID

@@ -2,13 +2,11 @@ package app.com.example.isuhar.jbmrus;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.Editable;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,13 +17,10 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.BasicHttpContext;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,10 +99,10 @@ public class BuyActivity extends ActionBarActivity {
 
             if(NameStr.length()==0 || PhoneStr.length()==0l || EmailStr.length()==0 || SityStr.length()==0
                     || StreetStr.length()==0 || HausStr.length()==0 || PorchStr.length()==0 || AprtStr.length()==0){
-                Toast.makeText(this, "Пожалуйста, заполните все поля",
+                Toast.makeText(this, "Please fill in all fields",
                         Toast.LENGTH_LONG).show();
             }else {
-                Toast.makeText(this, "Спасибо за покупку!",
+                Toast.makeText(this, "Thank you for your purchase!",
                         Toast.LENGTH_LONG).show();
                 new MyAsyncTask(id, value).execute(NameStr, PhoneStr, EmailStr, SityStr, StreetStr, HausStr,
                         PorchStr, AprtStr);

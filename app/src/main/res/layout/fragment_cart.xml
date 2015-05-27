@@ -15,7 +15,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Оформить"
+        android:text="Check out"
+        android:background="@drawable/touch_selector"
         android:id="@+id/button_cart"
         style="@style/ButtonMyTheme"
         android:focusable="false" />

@@ -38,7 +38,7 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		context = getApplicationContext();
-		
+
 		if (!Utils.hasConnection(this)) {
 			Toast.makeText(this, "No Internet connection(",
 					LENGTH_LONG).show();

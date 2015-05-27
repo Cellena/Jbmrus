@@ -10,12 +10,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 
 import app.com.example.isuhar.jbmrus.gcm.Config;
+import app.com.example.isuhar.jbmrus.util.Utils;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 public class RegisterActivity extends Activity {
 
@@ -34,6 +38,11 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		context = getApplicationContext();
+		
+		if (!Utils.hasConnection(this)) {
+			Toast.makeText(this, "No Internet connection(",
+					LENGTH_LONG).show();
+		}
 				if (TextUtils.isEmpty(regId)) {
 					regId = registerGCM();
 					Log.d("RegisterActivity", "GCM RegId: " + regId);

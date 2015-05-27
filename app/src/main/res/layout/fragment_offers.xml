@@ -11,10 +11,10 @@
 
 
     <ListView
+        style="@style/ForecastListStyle"
         android:id="@+id/listView_offers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:divider="@null"
-        style="@style/ListViewBraunTheme" />
+        android:divider="@null" />
 </LinearLayout>

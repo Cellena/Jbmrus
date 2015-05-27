@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        style="@style/ListViewBraunTheme"
+        style="@style/ForecastListStyle"
         android:background="@drawable/brauntheme_activated_background_holo_light"/>
 
 </FrameLayout>

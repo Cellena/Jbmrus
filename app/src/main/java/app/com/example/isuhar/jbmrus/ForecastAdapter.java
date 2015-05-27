@@ -71,6 +71,8 @@ public class ForecastAdapter extends CursorAdapter {
         nameText.setText(myNameText);
         priceText.setText(myPriceText);
 
+        image.setImageResource(R.drawable.back_img);
+
         DownloadImageTask ImageTask = new DownloadImageTask(myImgCache, image, mMemoryCache, context);
         ImageTask.execute(myImgUrl);
     }

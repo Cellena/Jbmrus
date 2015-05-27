@@ -28,7 +28,7 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
     ListView listView;
     Menu menu;
     MenuItem bedMenuItem;
-    long id = 0;
+    long id = 1;
 
 
     private static final String[] FORECAST_COLUMNS = {
@@ -83,6 +83,10 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
                              Bundle savedInstanceState) {
 
         id = getActivity().getIntent().getLongExtra("id", id);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            id = arguments.getLong("id");
+        }
         getLoaderManager().initLoader(FORECAST_LOADER, null, this);
 
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
@@ -139,12 +143,17 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
                 new String[]{String.valueOf(id)},
                 null
         ).getCount()==0) updateOffers();
+
     }
 
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
         String sortOrder = CatalogContract.OffersEntry._ID + " ASC";
         id = getActivity().getIntent().getLongExtra("id", id);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            id = arguments.getLong("id");
+        }
 
         Uri Categories = CatalogContract.OffersEntry.CONTENT_URI;
 

@@ -1,6 +1,5 @@
 package app.com.example.isuhar.jbmrus;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +32,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     };
     Menu menu;
     MenuItem bedMenuItem;
+
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(long id);
+    }
+
 
     private static final String[] FORECAST_COLUMNS = {
             CatalogContract.CategoriesEntry.TABLE_NAME + "." + CatalogContract.CategoriesEntry._ID,
@@ -95,9 +102,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//нажатие на элемент списка
-                Intent intent = new Intent(getActivity(), OffersActivity.class);
-                intent.putExtra("id", id);
-                startActivity(intent);
+
+                    ((Callback) getActivity())
+                            .onItemSelected(id);
             }
         });
         return rootView;
@@ -123,7 +130,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     public void onStart() {
         super.onStart();
-
         String FORECAST_UPDATE[] = {
                 CatalogContract.UpdateEntry.TABLE_NAME + "." + CatalogContract.UpdateEntry._ID,
                 CatalogContract.UpdateEntry.COLUMN_MUST

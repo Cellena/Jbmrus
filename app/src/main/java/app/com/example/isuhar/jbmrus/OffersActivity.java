@@ -11,6 +11,7 @@ import app.com.example.isuhar.jbmrus.data.CatalogContract;
 
 public class OffersActivity extends ActionBarActivity {
 
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private Intent mInfo;
     private static final String[] ORDER_COLUMNS = {
             CatalogContract.OrderEntry.TABLE_NAME + "." + CatalogContract.OrderEntry._ID
@@ -20,11 +21,14 @@ public class OffersActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offers);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    //.add(R.id.container, new OffersActivityFragment())
-                    .commit();
-        }
+
+            if (savedInstanceState == null) {
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_offers_container, new OffersActivityFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+            }
+
         mInfo = getIntent();
     }
 

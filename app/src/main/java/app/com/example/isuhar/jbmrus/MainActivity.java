@@ -12,12 +12,14 @@ import android.view.MenuItem;
 import app.com.example.isuhar.jbmrus.gcm.ShareExternalServer;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
     Context context;
     ShareExternalServer appUtil;
     String regId;
     AsyncTask<Void, Void, String> shareRegidTask;
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +45,44 @@ public class MainActivity extends ActionBarActivity {
                             Toast.LENGTH_LONG).show();
                             */
                 }
-
             };
             shareRegidTask.execute(null, null, null);
         }
+        if (findViewById(R.id.weather_detail_container) != null) {
+            // The detail container view will be present only in the large-screen layouts
+            // (res/layout-sw600dp). If this view is present, then the activity should be
+            // in two-pane mode.
+            mTwoPane = true;
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            if (savedInstanceState == null) {
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.weather_detail_container,
+                                new OffersActivityFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+            }
+        } else {
+            mTwoPane = false;
+            if (savedInstanceState == null) {
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_forecast, new ForecastFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+            }
+        }
+        /*
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new ForecastFragment())
                     .commit();
         }
+        */
 
     }
     protected void onResume() {
-
         super.onResume();
-
     }
 
     @Override
@@ -81,5 +106,26 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onItemSelected(long id) {
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle args = new Bundle();
+            args.putLong("id", id);
+
+            OffersActivityFragment fragment = new OffersActivityFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, OffersActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
+        }
     }
 }

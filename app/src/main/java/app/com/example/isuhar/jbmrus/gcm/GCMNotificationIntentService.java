@@ -71,9 +71,10 @@ public class GCMNotificationIntentService extends IntentService {
 			ContentValues OrderValues = new ContentValues();
 			OrderValues.put(CatalogContract.UpdateEntry.COLUMN_MUST, msg);
 			getContentResolver().insert(CatalogContract.UpdateEntry.CONTENT_URI, OrderValues);
+			msg = "Prepare Catalog!";
 		}
 
-		msg = "Prepare Catalog!";
+
 		Log.d(TAG, "Preparing to send notification...: " + msg);
 		mNotificationManager = (NotificationManager) this
 				.getSystemService(Context.NOTIFICATION_SERVICE);

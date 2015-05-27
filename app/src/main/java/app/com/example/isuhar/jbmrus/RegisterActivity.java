@@ -37,19 +37,8 @@ public class RegisterActivity extends Activity {
 				if (TextUtils.isEmpty(regId)) {
 					regId = registerGCM();
 					Log.d("RegisterActivity", "GCM RegId: " + regId);
-				} else {
-					/*
-					Toast.makeText(getApplicationContext(),
-							"Already Registered with GCM Server!",
-							Toast.LENGTH_LONG).show();
-							*/
 				}
-				if (TextUtils.isEmpty(regId)) {
-					/*
-					Toast.makeText(getApplicationContext(), "RegId is empty!",
-							Toast.LENGTH_LONG).show();
-							*/
-				} else {
+				if (!TextUtils.isEmpty(regId)) {
 
 					Intent i = new Intent(getApplicationContext(),
 							MainActivity.class);
@@ -73,12 +62,6 @@ public class RegisterActivity extends Activity {
 			Log.d("RegisterActivity",
 					"registerGCM - successfully registered with GCM server - regId: "
 							+ regId);
-		} else {
-			/*
-			Toast.makeText(getApplicationContext(),
-					"RegId already available. RegId: " + regId,
-					Toast.LENGTH_LONG).show();
-					*/
 		}
 		return regId;
 	}

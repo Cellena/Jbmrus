@@ -73,7 +73,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap result) {
-        if (bitmap!=null) myImage.setImageBitmap(bitmap);
+        if (result!=null) myImage.setImageBitmap(result);
     }
 
 }

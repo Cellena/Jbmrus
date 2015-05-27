@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="EditTextBraunTheme" parent="android:Widget.EditText">
+	  <item name="android:background">@drawable/brauntheme_edit_text_holo_light</item>
+	  <item name="android:textColor">#000000</item>
+  </style>
+
+  <style name="ButtonBraunTheme" parent="android:Widget.Button">
+	  <item name="android:background">@drawable/brauntheme_btn_default_holo_light</item>
+	  <item name="android:minHeight">48dip</item>
+	  <item name="android:minWidth">64dip</item>
+	  <item name="android:textColor">#000000</item>
+  </style>
+
+  <style name="ImageButtonBraunTheme" parent="android:Widget.ImageButton">
+	  <item name="android:background">@drawable/brauntheme_btn_default_holo_light</item>
+  </style>
+
+  <style name="ProgressBarBraunTheme" parent="android:Widget.ProgressBar.Horizontal">
+      <item name="android:progressDrawable">@drawable/brauntheme_progress_horizontal_holo_light</item>
+      <item name="android:indeterminateDrawable">@drawable/brauntheme_progress_indeterminate_horizontal_holo_light</item>
+      <item name="android:minHeight">16dip</item>
+      <item name="android:maxHeight">16dip</item>
+  </style>
+
+  <style name="ListViewBraunTheme" parent="android:Widget.ListView">
+      <item name="android:listSelector">@drawable/brauntheme_list_selector_holo_light</item>
+  </style>
+
+  <style name="ListViewBraunTheme.White" parent="android:Widget.ListView.White">
+      <item name="android:listSelector">@drawable/brauntheme_list_selector_holo_light</item>
+  </style>
+
+  <style name="SpinnerItemBraunTheme" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+      <item name="android:textColor">#000000</item>
+  </style>
+
+</resources>

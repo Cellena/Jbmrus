@@ -16,14 +16,15 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:displayOptions="useLogo|showHome"
+        android:theme="@style/Theme.New_actbar"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:logo="@mipmap/ic_launcher"
-        android:theme="@style/Theme.New_actbar" >
+        android:displayOptions="useLogo|showHome"
+        android:logo="@mipmap/ic_launcher">
         <activity
             android:name=".RegisterActivity"
-            android:label="Регистрация">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

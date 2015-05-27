@@ -1,19 +1,14 @@
 <resources>
     <string name="app_name">Jbmrus</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_cart">Корзина</string>
-    <string name="catalog">Каталог</string>
-    <string name="action_refresh">Обновить</string>
-    <string name="item1">Item1</string>
-    <string name="item2">Item2</string>
-    <string name="item3">Item3</string>
-    <string name="item4">Item4</string>
-    <string name="title_activity_cart_">Корзина</string>
-    <string name="action_settings">Настройки</string>
+    <string name="action_cart">Cart</string>
+    <string name="catalog">Directory</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="title_activity_cart_">Cart</string>
+    <string name="action_settings">Settings</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_cart">Корзина</string>
-    <string name="title_activity_buy">Оформление покупки</string>
-    <string name="title_activity_offers">Каталог</string>
+    <string name="title_activity_cart">Cart</string>
+    <string name="title_activity_buy">Checkout</string>
+    <string name="title_activity_offers">Directory</string>
 </resources>

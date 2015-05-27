@@ -157,6 +157,7 @@ class MyAsyncTask extends AsyncTask<String, Integer, Double> {
                 // Execute HTTP Post Request
                 HttpResponse response = httpclient.execute(httppost);
 
+
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
             } catch (IOException e) {

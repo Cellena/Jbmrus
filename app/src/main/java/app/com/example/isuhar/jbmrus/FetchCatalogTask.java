@@ -200,7 +200,7 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
             // Read the input stream into a String
                 inputStream = urlConnection.getInputStream();
 
-                if (inputStream==null) Toast.makeText(mContext, "Ошибка при загрузке",
+                if (inputStream==null) Toast.makeText(mContext, "Load Fail",
                         LENGTH_LONG).show();;
 
 

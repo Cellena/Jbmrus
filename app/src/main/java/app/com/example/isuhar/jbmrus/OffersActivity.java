@@ -1,20 +1,12 @@
 package app.com.example.isuhar.jbmrus;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.Environment;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.io.File;
-
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
-
-import static android.os.Environment.isExternalStorageRemovable;
 
 
 public class OffersActivity extends ActionBarActivity {
@@ -50,7 +42,7 @@ public class OffersActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_cart) {
+        if (id == R.id.action_count_offers || id==R.id.action_cart) {
             Intent intent = new Intent(this, CartActivity.class);
             startActivity(intent);
             return true;

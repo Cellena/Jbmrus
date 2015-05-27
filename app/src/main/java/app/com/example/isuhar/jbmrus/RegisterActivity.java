@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -39,13 +38,17 @@ public class RegisterActivity extends Activity {
 					regId = registerGCM();
 					Log.d("RegisterActivity", "GCM RegId: " + regId);
 				} else {
+					/*
 					Toast.makeText(getApplicationContext(),
 							"Already Registered with GCM Server!",
 							Toast.LENGTH_LONG).show();
+							*/
 				}
 				if (TextUtils.isEmpty(regId)) {
+					/*
 					Toast.makeText(getApplicationContext(), "RegId is empty!",
 							Toast.LENGTH_LONG).show();
+							*/
 				} else {
 
 					Intent i = new Intent(getApplicationContext(),
@@ -71,9 +74,11 @@ public class RegisterActivity extends Activity {
 					"registerGCM - successfully registered with GCM server - regId: "
 							+ regId);
 		} else {
+			/*
 			Toast.makeText(getApplicationContext(),
 					"RegId already available. RegId: " + regId,
 					Toast.LENGTH_LONG).show();
+					*/
 		}
 		return regId;
 	}
@@ -132,9 +137,11 @@ public class RegisterActivity extends Activity {
 
 			@Override
 			protected void onPostExecute(String msg) {
+				/*
 				Toast.makeText(getApplicationContext(),
 						"Registered with GCM Server." + msg, Toast.LENGTH_LONG)
 						.show();
+						*/
 				Intent i = new Intent(getApplicationContext(),
 						MainActivity.class);
 				i.putExtra("regId", regId);

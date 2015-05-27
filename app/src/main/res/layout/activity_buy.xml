@@ -104,7 +104,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        style="@style/ButtonMyTheme" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -190,11 +191,11 @@
         android:layout_height="wrap_content"
         android:text="Сумма заказа"
         android:id="@+id/textView9"
-        android:layout_marginTop="54dp"
-        android:layout_below="@+id/editText6"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/fam"
+        android:layout_toEndOf="@+id/fam"
+        android:layout_marginBottom="41dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -206,15 +207,5 @@
         android:layout_alignLeft="@+id/editText7"
         android:layout_alignStart="@+id/editText7"
         android:textSize="25dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Р"
-        android:id="@+id/textView11"
-        android:textSize="15dp"
-        android:layout_alignBottom="@+id/textView9"
-        android:layout_alignLeft="@+id/editText8"
-        android:layout_alignStart="@+id/editText8" />
 
 </RelativeLayout>

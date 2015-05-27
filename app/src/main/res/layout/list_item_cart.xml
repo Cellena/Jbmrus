@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:padding="10dp"
     android:descendantFocusability="blocksDescendants"
-    android:background="#ffffe9a9">
+    android:background="#ffeae8e9">
 
     <LinearLayout
         android:layout_height="117dp"

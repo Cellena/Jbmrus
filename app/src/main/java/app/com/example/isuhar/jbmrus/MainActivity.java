@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import app.com.example.isuhar.jbmrus.gcm.ShareExternalServer;
 
@@ -39,8 +38,10 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 protected void onPostExecute(String result) {
                     shareRegidTask = null;
+                    /*
                     Toast.makeText(getApplicationContext(), result,
                             Toast.LENGTH_LONG).show();
+                            */
                 }
 
             };
@@ -53,13 +54,11 @@ public class MainActivity extends ActionBarActivity {
         }
 
     }
-
     protected void onResume() {
 
         super.onResume();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,7 +74,7 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_cart) {
+        if (id == R.id.action_count_offers || id==R.id.action_cart) {
             Intent intent = new Intent(this, CartActivity.class);
             startActivity(intent);
             return true;
@@ -83,6 +82,4 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }

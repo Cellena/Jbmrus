@@ -3,7 +3,6 @@ package app.com.example.isuhar.jbmrus.data;
 /**
  * Created by iSuhar on 17.05.2015.
  */
-import android.annotation.TargetApi;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -359,10 +358,4 @@ public class CatalogProvider extends ContentProvider {
         }
     }
 
-    @Override
-    @TargetApi(11)
-    public void shutdown() {
-        mOpenHelper.close();
-        super.shutdown();
-    }
 }

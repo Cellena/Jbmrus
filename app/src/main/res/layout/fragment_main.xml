@@ -11,6 +11,9 @@
     <ListView
         android:id="@+id/listview_forecast"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:divider="@null"
+        style="@style/ListViewBraunTheme"
+        android:background="@drawable/brauntheme_activated_background_holo_light"/>
 
 </FrameLayout>

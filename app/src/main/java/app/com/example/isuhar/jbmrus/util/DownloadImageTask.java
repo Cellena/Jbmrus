@@ -51,7 +51,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
                         InputStream in = new java.net.URL(urlDisplay).openStream();
                         bitmap = BitmapFactory.decodeStream(in);
-                        if (bitmap==null) Toast.makeText(mContext, "Ошибка при загрузке",
+                        if (bitmap==null) Toast.makeText(mContext, "Load Fail",
                                 LENGTH_LONG).show();;
 
                 } catch (Exception e) {

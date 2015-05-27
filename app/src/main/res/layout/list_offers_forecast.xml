@@ -4,7 +4,7 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="vertical"
     android:padding="2dp"
-    android:background="#ffcbb290"
+    android:background="#ffc5c3c4"
     >
 
     <LinearLayout
@@ -29,11 +29,12 @@
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:orientation="horizontal"
-        android:background="#ffcd853f"
+        android:background="#ffe7e4e2"
         android:layout_weight="100"
         android:weightSum="100"
         android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp">
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="2dp">
     <TextView
             android:id="@+id/list_item_name_textview"
         android:layout_width="match_parent"

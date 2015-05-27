@@ -19,8 +19,8 @@
         android:displayOptions="useLogo|showHome"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:logo="@drawable/ic_action_shopping_cart"
-        android:theme="@style/AppTheme" >
+        android:logo="@mipmap/ic_launcher"
+        android:theme="@style/Theme.New_actbar" >
         <activity
             android:name=".RegisterActivity"
             android:label="Регистрация">
@@ -30,9 +30,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:label="@string/catalog" >
-        </activity>
+        android:name=".MainActivity"
+        android:label="@string/catalog" >
+    </activity>
 
         <provider
             android:name=".data.CatalogProvider"

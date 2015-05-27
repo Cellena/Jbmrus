@@ -3,28 +3,18 @@ package app.com.example.isuhar.jbmrus;
 /**
  * Created by iSuhar on 17.05.2015.
  */
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.text.format.Time;
 import android.util.Log;
-
-import app.com.example.isuhar.jbmrus.data.CatalogContract;
-import app.com.example.isuhar.jbmrus.data.CatalogContract.OffersEntry;
-import app.com.example.isuhar.jbmrus.data.CatalogContract.CategoriesEntry;
-import app.com.example.isuhar.jbmrus.util.DownloadImageTask;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,7 +24,10 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Vector;
 
-import static android.text.TextUtils.lastIndexOf;
+import app.com.example.isuhar.jbmrus.data.CatalogContract.CategoriesEntry;
+import app.com.example.isuhar.jbmrus.data.CatalogContract.OffersEntry;
+
+import static android.widget.Toast.LENGTH_LONG;
 
 public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
 
@@ -202,14 +195,16 @@ public class FetchCatalogTask extends AsyncTask<String, Void, Void> {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
+            InputStream inputStream;
 
             // Read the input stream into a String
-            InputStream inputStream = urlConnection.getInputStream();
+                inputStream = urlConnection.getInputStream();
+
+                if (inputStream==null) Toast.makeText(mContext, "Ошибка при загрузке",
+                        LENGTH_LONG).show();;
+
+
             StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                // Nothing to do.
-                return null;
-            }
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;

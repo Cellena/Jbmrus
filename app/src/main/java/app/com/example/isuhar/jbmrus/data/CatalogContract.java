@@ -7,7 +7,6 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.text.format.Time;
 
 /**
  * Defines table and column names for the weather database.
@@ -23,6 +22,7 @@ public class CatalogContract {
     public static final String PATH_OFFERS = "offers";
     public static final  String PATH_ORDER = "order";
     public static final  String PATH_CART = "cart";
+    public static final  String PATH_UPDATE = "update";
 
 
     /* Inner class that defines the table contents of the location table */
@@ -84,6 +84,30 @@ public class CatalogContract {
         public static final String TABLE_NAME = "orders";
 
         public static final String COLUMN_ORDER_OFFER_ID = "id_offer";
+
+        public static Uri buildOrdersUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+    }
+
+    public static final class UpdateEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_UPDATE).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ORDER;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ORDER;
+
+        public static final String TABLE_NAME = "myUpdates";
+
+        public static final String COLUMN_MUST = "must_update";
+
+        public static Uri buildUpdateUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
 
     }
 }

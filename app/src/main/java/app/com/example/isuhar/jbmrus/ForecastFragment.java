@@ -1,16 +1,13 @@
 package app.com.example.isuhar.jbmrus;
 
-import android.content.ContentValues;
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.support.v4.app.Fragment;
-import android.text.format.Time;
-import android.util.Log;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,26 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import android.widget.AdapterView.OnItemClickListener;
-
 
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
-import app.com.example.isuhar.jbmrus.ForecastAdapter;
-import app.com.example.isuhar.jbmrus.data.CatalogProvider;
-import app.com.example.isuhar.jbmrus.util.DiskLruImageCache;
-
-import static android.provider.Contacts.Settings;
 
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -128,27 +110,38 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void updateCategories() {
 
-        final int DISK_CACHE_SIZE = 1024 * 1024 * 100; // 10MB
-        final String DISK_CACHE_SUBDIR = "images";
-        DiskLruImageCache myImgCache = new DiskLruImageCache(getActivity(), DISK_CACHE_SUBDIR, DISK_CACHE_SIZE);
-        myImgCache.clearCache();
-
-
-        int count = getActivity().getContentResolver().delete(CatalogContract.CategoriesEntry.CONTENT_URI, null, null);
-        //count += getActivity().getContentResolver().delete(CatalogContract.OffersEntry.CONTENT_URI, null, null);
+        getActivity().getContentResolver().delete(CatalogContract.CategoriesEntry.CONTENT_URI, null, null);
+        getActivity().getContentResolver().delete(
+                CatalogContract.OffersEntry.CONTENT_URI,
+                null,
+                null
+        );
         FetchCatalogTask catalogTask = new FetchCatalogTask(getActivity(), true, null);
         catalogTask.execute();//передаем параметры запроса
+        getActivity().getContentResolver().delete(CatalogContract.UpdateEntry.CONTENT_URI,null,null);
     }
 
     public void onStart() {
         super.onStart();
+
+        String FORECAST_UPDATE[] = {
+                CatalogContract.UpdateEntry.TABLE_NAME + "." + CatalogContract.UpdateEntry._ID,
+                CatalogContract.UpdateEntry.COLUMN_MUST
+        };
+
         if (getActivity().getContentResolver().query(
                 CatalogContract.CategoriesEntry.CONTENT_URI,
                 FORECAST_COLUMNS,
                 null,
                 null,
                 null
-        ).getCount()==0) updateCategories();
+        ).getCount() == 0 || getActivity().getContentResolver().query(
+                CatalogContract.UpdateEntry.CONTENT_URI,
+                FORECAST_UPDATE,
+                null,
+                null,
+                null
+        ).getCount() != 0) updateCategories();
     }
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 

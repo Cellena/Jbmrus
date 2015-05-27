@@ -13,7 +13,7 @@ import app.com.example.isuhar.jbmrus.data.CatalogContract.OffersEntry;
 
 public class CatalogDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 9;
 
     static final String DATABASE_NAME = "catalog.db";
 
@@ -41,6 +41,11 @@ public class CatalogDbHelper extends SQLiteOpenHelper {
                 CategoriesEntry.COLUMN_CATEGORY_NAME + " TEXT NOT NULL " +
                 " );";
 
+        final String SQL_CREATE_UPDATE_TABLE = "CREATE TABLE " + CatalogContract.UpdateEntry.TABLE_NAME + " (" +
+                CatalogContract.UpdateEntry._ID + " INTEGER PRIMARY KEY," +
+                CatalogContract.UpdateEntry.COLUMN_MUST + " TEXT " +
+                " );";
+
         final String SQL_CREATE_ORDERS_TABLE = "CREATE TABLE " + CatalogContract.OrderEntry.TABLE_NAME + " (" +
 
                 CatalogContract.OrderEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
@@ -51,6 +56,7 @@ public class CatalogDbHelper extends SQLiteOpenHelper {
                 CatalogContract.OffersEntry.TABLE_NAME + " (" + OffersEntry._ID +
                 " ));";
 
+        sqLiteDatabase.execSQL(SQL_CREATE_UPDATE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_ORDERS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_CATEGORIES_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_OFFERS_TABLE);
@@ -59,6 +65,7 @@ public class CatalogDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CatalogContract.UpdateEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CategoriesEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + OffersEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CatalogContract.OrderEntry.TABLE_NAME);

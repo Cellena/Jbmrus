@@ -1,18 +1,14 @@
 package app.com.example.isuhar.jbmrus;
 
 import android.content.ContentUris;
-import android.content.ContentValues;
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.support.v4.app.Fragment;
-import android.text.format.Time;
-import android.util.Log;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,37 +16,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import android.widget.AdapterView.OnItemClickListener;
-
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
-import app.com.example.isuhar.jbmrus.ForecastAdapter;
-import app.com.example.isuhar.jbmrus.data.CatalogProvider;
 
-import static android.provider.Contacts.Settings;
 import static android.widget.Toast.LENGTH_LONG;
 
 public class CartFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     final String LOG_TAG = "myLogs";
     private static final int FORECAST_LOADER = 1;
-    private SimpleCursorAdapter mForecastAdapter;
+    private CartAdapter mForecastAdapter;
     ListView listView;
     Button button;
     Menu menu;
@@ -68,12 +49,14 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
             CatalogContract.OffersEntry.TABLE_NAME + "." + CatalogContract.OffersEntry._ID,
             CatalogContract.OffersEntry.COLUMN_OFFER_NAME,
             CatalogContract.OffersEntry.COLUMN_OFFER_PRICE,
-            "countOffers"
+            "countOffers",
+            CatalogContract.OffersEntry.COLUMN_OFFER_IMG
     };
 
 
     public CartFragment() {
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,14 +82,11 @@ public class CartFragment extends Fragment implements LoaderManager.LoaderCallba
                              Bundle savedInstanceState) {
         getLoaderManager().initLoader(FORECAST_LOADER, null, this);
 
-        String[] from = new String[] {CatalogContract.OffersEntry.COLUMN_OFFER_NAME,
-                CatalogContract.OffersEntry.COLUMN_OFFER_PRICE, "countOffers"};
-        int[] to = new int[] { R.id.list_item_name_textview2, R.id.list_item_price_textview2, R.id.list_item_count_textview };
 
-        mForecastAdapter = new SimpleCursorAdapter(getActivity(),R.layout.list_item_cart,null,from,to,0);
+
+        mForecastAdapter = new CartAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_cart, container, false);
-        final Vector<ContentValues> oVVector = new Vector<ContentValues>(1);
 
         listView = (ListView) rootView.findViewById(R.id.listView_cart2);
         button = (Button) rootView.findViewById(R.id.button_cart);

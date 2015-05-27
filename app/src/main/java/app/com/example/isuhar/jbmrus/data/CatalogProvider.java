@@ -12,8 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
-import java.sql.SQLException;
-
 public class CatalogProvider extends ContentProvider {
 
     // The URI Matcher used by this content provider.
@@ -27,6 +25,7 @@ public class CatalogProvider extends ContentProvider {
     static final int ORDERS = 103;
     static final int OFFERS_AND_COUNT = 104;
     static final int ORDERS_DELETE = 105;
+    static final int UPDATE = 106;
 
     private static final SQLiteQueryBuilder sOffersByCategoriesQueryBuilder;
 
@@ -47,6 +46,7 @@ public class CatalogProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = CatalogContract.CONTENT_AUTHORITY;
 
+        matcher.addURI(authority, CatalogContract.PATH_UPDATE, UPDATE);
         matcher.addURI(authority, CatalogContract.PATH_OFFERS, OFFERS);
         matcher.addURI(authority, CatalogContract.PATH_OFFERS + "/*", OFFERS_BY_CATEGORIES);
         matcher.addURI(authority, CatalogContract.PATH_ORDER + "/#", ORDERS_DELETE);
@@ -70,6 +70,8 @@ public class CatalogProvider extends ContentProvider {
 
         switch (match) {
 
+            case UPDATE:
+                return CatalogContract.UpdateEntry.CONTENT_ITEM_TYPE;
             case ORDERS_DELETE:
                 return CatalogContract.OrderEntry.CONTENT_ITEM_TYPE;
             case OFFERS_AND_COUNT:
@@ -110,12 +112,24 @@ public class CatalogProvider extends ContentProvider {
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
 
+            case UPDATE:
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        CatalogContract.UpdateEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
             case OFFERS_AND_COUNT:
                 String mySelect = "SELECT " + CatalogContract.OffersEntry.TABLE_NAME + "." + CatalogContract.OffersEntry._ID
                         + "," + CatalogContract.OffersEntry.COLUMN_OFFER_NAME
                         + "," + CatalogContract.OffersEntry.COLUMN_OFFER_PRICE + "," + " count(" +
                         CatalogContract.OrderEntry.TABLE_NAME + "." + CatalogContract.OrderEntry._ID
-                        + ") as countOffers FROM " + CatalogContract.OffersEntry.TABLE_NAME
+                        + ") as countOffers, "+ CatalogContract.OffersEntry.COLUMN_OFFER_IMG + " FROM "
+                        + CatalogContract.OffersEntry.TABLE_NAME
                         + " INNER JOIN " + CatalogContract.OrderEntry.TABLE_NAME
                         + " ON " + CatalogContract.OrderEntry.TABLE_NAME + "." + CatalogContract.OrderEntry.COLUMN_ORDER_OFFER_ID
                         + " = " + CatalogContract.OffersEntry.TABLE_NAME + "." + CatalogContract.OffersEntry._ID
@@ -178,6 +192,14 @@ public class CatalogProvider extends ContentProvider {
         Uri returnUri;
 
         switch (match) {
+            case UPDATE: {
+                long _id = db.insert(CatalogContract.UpdateEntry.TABLE_NAME, null, values);
+                if (_id > 0)
+                    returnUri = CatalogContract.UpdateEntry.buildUpdateUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             case OFFERS: {
                 long _id = db.insert(CatalogContract.OffersEntry.TABLE_NAME, null, values);
                 if (_id > 0)
@@ -189,7 +211,7 @@ public class CatalogProvider extends ContentProvider {
             case ORDERS: {
                 long _id = db.insert(CatalogContract.OrderEntry.TABLE_NAME, null, values);
                 if (_id > 0)
-                    returnUri = CatalogContract.OffersEntry.buildOffersUri(_id);
+                    returnUri = CatalogContract.OrderEntry.buildOrdersUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -220,6 +242,9 @@ public class CatalogProvider extends ContentProvider {
         }
 
         switch (match) {
+            case UPDATE:
+                rowsDeleted = db.delete(CatalogContract.UpdateEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             case ORDERS_DELETE:
                 final String DELETE_ROW = "delete from " + CatalogContract.OrderEntry.TABLE_NAME + " where _id in " +
                         "(select _id from " + CatalogContract.OrderEntry.TABLE_NAME + " where "

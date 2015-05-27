@@ -5,14 +5,23 @@
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:background="#ffffe9a9">
 
     <TextView
             android:id="@+id/list_item_textview_category"
-            android:layout_width="301dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Кофе для турки"
-            android:textSize="20dp" />
+            android:textSize="25dp"
+        android:autoText="false"
+        android:background="#ffffffff"
+        android:clickable="false"
+        android:textColor="#ff000000"
+        android:theme="@style/Base.V14.Theme.AppCompat.Light"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_margin="3dp"
+        android:paddingLeft="80dp" />
 
 
 </LinearLayout>

@@ -5,52 +5,60 @@
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:padding="5dp"
-    android:descendantFocusability="blocksDescendants">
+    android:padding="10dp"
+    android:descendantFocusability="blocksDescendants"
+    android:background="#ffffe9a9">
 
     <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_weight="0.5"
-        android:orientation="vertical"
+        android:layout_height="117dp"
+        android:layout_width="256dp"
+        android:orientation="horizontal"
         android:paddingLeft="16dp"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:background="#ffffffff">
+        <ImageView
+            android:layout_width="111dp"
+            android:layout_height="91dp"
+            android:id="@+id/imageView_offer_cart"
+            android:src="@drawable/back_img"
+            android:background="#ffffffff"
+            android:adjustViewBounds="true"
+            android:layout_weight="0.68"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp" />
 
         <TextView
             android:id="@+id/list_item_name_textview2"
-            android:layout_width="147dp"
+            android:layout_width="121dp"
             android:layout_height="match_parent"
-            android:text="КОФЕ ЯМАЙКА БЛЮ МАУНТИН, ПОМОЛ ДЛЯ ТУРКИ, ОБЖАРКА СРЕДНЯЯ (200 Г)" />
+            android:text="КОФЕ ЯМАЙКА БЛЮ МАУНТИН, ПОМОЛ ДЛЯ ТУРКИ, ОБЖАРКА СРЕДНЯЯ (200 Г)"
+            android:layout_margin="10dp" />
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/list_item_price_textview2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2100"
-            android:textStyle="bold"
-            android:textIsSelectable="false"
-            android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
-            android:numeric="integer" />
 
     </LinearLayout>
 
     <TextView
+        android:id="@+id/list_item_price_textview2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2100"
+        android:textStyle="bold"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
+        android:numeric="integer"
+        android:layout_marginRight="2dp"
+        android:textColor="#ff000000"
+        android:layout_marginLeft="5dp" />
+
+    <ImageView
     android:id="@+id/list_item_curency_textview"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="11dp"
+    android:layout_height="18dp"
+        android:src="@drawable/rub_sign"
     android:text="Р"
     android:textStyle="bold"
     android:textIsSelectable="false"
-    android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
-    android:layout_weight="0.75" />
+    android:textSize="@dimen/abc_text_size_subtitle_material_toolbar" />
 
     <TextView
         android:id="@+id/list_item_count_textview"
@@ -60,9 +68,11 @@
         android:textStyle="bold"
         android:textIsSelectable="false"
         android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
-        android:layout_weight="0.78"
+        android:layout_weight="0.1"
         android:numeric="integer"
         android:padding="1dp"
-        android:background="#fffffe95" />
+        android:layout_marginLeft="5dp"
+        android:textColor="#ff000000"
+        android:background="#ffffffff" />
 
 </LinearLayout>

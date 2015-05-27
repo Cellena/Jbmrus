@@ -1,15 +1,13 @@
 package app.com.example.isuhar.jbmrus;
 
 import android.content.ContentValues;
-import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.support.v4.app.Fragment;
-import android.text.format.Time;
-import android.util.Log;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,30 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.widget.AdapterView.OnItemClickListener;
-
-
-import java.util.Vector;
+import android.widget.ListView;
 
 import app.com.example.isuhar.jbmrus.data.CatalogContract;
-import app.com.example.isuhar.jbmrus.ForecastAdapter;
-import app.com.example.isuhar.jbmrus.data.CatalogProvider;
-import app.com.example.isuhar.jbmrus.util.DiskLruImageCache;
-
-import static android.provider.Contacts.Settings;
 
 public class OffersActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -147,11 +125,6 @@ public class OffersActivityFragment extends Fragment implements LoaderManager.Lo
     }
 
     private void updateOffers() {
-        int count = getActivity().getContentResolver().delete(
-                CatalogContract.OffersEntry.CONTENT_URI,
-                CatalogContract.OffersEntry.TABLE_NAME + '.' + CatalogContract.OffersEntry.COLUMN_CAT_KEY + " = ?",
-                new String[]{String.valueOf(id)}
-        );
         FetchCatalogTask catalogTask = new FetchCatalogTask(getActivity(), false, String.valueOf(id));
         catalogTask.execute();//передаем параметры запроса
     }

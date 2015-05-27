@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="BraunTheme" parent="@style/_BraunTheme"/>
+
+  <style name="_BraunTheme" parent="Theme.AppCompat.Light">
+
+    <item name="android:editTextStyle">@style/EditTextBraunTheme</item>
+
+    <item name="android:textColorHighlight">#99238f21</item>
+
+    <item name="android:buttonStyle">@style/ButtonBraunTheme</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonBraunTheme</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarBraunTheme</item>
+
+    <item name="android:listViewStyle">@style/ListViewBraunTheme</item>
+
+    <item name="android:listViewWhiteStyle">@style/ListViewBraunTheme.White</item>
+
+    <item name="android:spinnerItemStyle">@style/SpinnerItemBraunTheme</item>
+
+  </style>
+
+</resources>

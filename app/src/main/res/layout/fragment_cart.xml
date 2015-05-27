@@ -26,6 +26,6 @@
         android:id="@+id/listView_cart2"
         android:layout_gravity="center_horizontal"
         android:divider="@null"
-        style="@style/ListViewAppTheme.White" />
+        style="@style/ListViewBraunTheme" />
 
 </LinearLayout>

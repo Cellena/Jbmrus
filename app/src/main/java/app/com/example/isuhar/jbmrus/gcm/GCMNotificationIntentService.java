@@ -67,7 +67,7 @@ public class GCMNotificationIntentService extends IntentService {
 
 	private void sendNotification(String msg) {
 
-		if (msg == null) {
+		if (msg == "null") {
 			ContentValues OrderValues = new ContentValues();
 			OrderValues.put(CatalogContract.UpdateEntry.COLUMN_MUST, msg);
 			getContentResolver().insert(CatalogContract.UpdateEntry.CONTENT_URI, OrderValues);

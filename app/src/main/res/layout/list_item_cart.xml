@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:padding="10dp"
     android:descendantFocusability="blocksDescendants"
-    android:background="#ffeae8e9">
+    android:background="@drawable/mytheme_btn_default_holo_light">
 
     <LinearLayout
         android:layout_height="117dp"
@@ -55,7 +55,6 @@
     android:layout_width="11dp"
     android:layout_height="18dp"
         android:src="@drawable/rub_sign"
-    android:text="Р"
     android:textStyle="bold"
     android:textIsSelectable="false"
     android:textSize="@dimen/abc_text_size_subtitle_material_toolbar" />
@@ -69,7 +68,6 @@
         android:textIsSelectable="false"
         android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"
         android:layout_weight="0.1"
-        android:numeric="integer"
         android:padding="1dp"
         android:layout_marginLeft="5dp"
         android:textColor="#ff000000"
